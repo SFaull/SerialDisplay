@@ -33,6 +33,11 @@
             this.btnRead = new System.Windows.Forms.Button();
             this.btnIDN = new System.Windows.Forms.Button();
             this.btnGetBuff = new System.Windows.Forms.Button();
+            this.btnLoadImage = new System.Windows.Forms.Button();
+            this.pbPreview = new System.Windows.Forms.PictureBox();
+            this.btnScreenCapture = new System.Windows.Forms.Button();
+            this.cbTimer = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSend
@@ -85,11 +90,54 @@
             this.btnGetBuff.UseVisualStyleBackColor = true;
             this.btnGetBuff.Click += new System.EventHandler(this.btnGetBuff_Click);
             // 
+            // btnLoadImage
+            // 
+            this.btnLoadImage.Location = new System.Drawing.Point(189, 40);
+            this.btnLoadImage.Name = "btnLoadImage";
+            this.btnLoadImage.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadImage.TabIndex = 5;
+            this.btnLoadImage.Text = "Load Image";
+            this.btnLoadImage.UseVisualStyleBackColor = true;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
+            // 
+            // pbPreview
+            // 
+            this.pbPreview.Location = new System.Drawing.Point(86, 138);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(240, 240);
+            this.pbPreview.TabIndex = 6;
+            this.pbPreview.TabStop = false;
+            // 
+            // btnScreenCapture
+            // 
+            this.btnScreenCapture.Location = new System.Drawing.Point(678, 169);
+            this.btnScreenCapture.Name = "btnScreenCapture";
+            this.btnScreenCapture.Size = new System.Drawing.Size(79, 48);
+            this.btnScreenCapture.TabIndex = 7;
+            this.btnScreenCapture.Text = "Screen Capture";
+            this.btnScreenCapture.UseVisualStyleBackColor = true;
+            this.btnScreenCapture.Click += new System.EventHandler(this.btnScreenCapture_Click);
+            // 
+            // cbTimer
+            // 
+            this.cbTimer.AutoSize = true;
+            this.cbTimer.Location = new System.Drawing.Point(604, 419);
+            this.cbTimer.Name = "cbTimer";
+            this.cbTimer.Size = new System.Drawing.Size(52, 17);
+            this.cbTimer.TabIndex = 8;
+            this.cbTimer.Text = "Timer";
+            this.cbTimer.UseVisualStyleBackColor = true;
+            this.cbTimer.CheckedChanged += new System.EventHandler(this.cbTimer_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cbTimer);
+            this.Controls.Add(this.btnScreenCapture);
+            this.Controls.Add(this.pbPreview);
+            this.Controls.Add(this.btnLoadImage);
             this.Controls.Add(this.btnGetBuff);
             this.Controls.Add(this.btnIDN);
             this.Controls.Add(this.btnRead);
@@ -97,7 +145,9 @@
             this.Controls.Add(this.btnSend);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,6 +158,10 @@
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.Button btnIDN;
         private System.Windows.Forms.Button btnGetBuff;
+        private System.Windows.Forms.Button btnLoadImage;
+        private System.Windows.Forms.PictureBox pbPreview;
+        private System.Windows.Forms.Button btnScreenCapture;
+        private System.Windows.Forms.CheckBox cbTimer;
     }
 }
 

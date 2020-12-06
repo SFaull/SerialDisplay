@@ -96,14 +96,19 @@ namespace DisplayController
         }
 
 
-        public void WriteImage(string path)
+        public void WriteImage(Bitmap bitmap)
         {
-            Bitmap bitmap = new Bitmap(path);
             List<Tile> tiles = DisplayController.ImageToTiles(bitmap);
-            foreach(Tile tile in tiles)
+            foreach (Tile tile in tiles)
             {
                 this.UpdateTile(tile);
             }
+        }
+
+        public void WriteImage(string path)
+        {
+            Bitmap bitmap = new Bitmap(path);
+            this.WriteImage(bitmap);
         }
 
 
