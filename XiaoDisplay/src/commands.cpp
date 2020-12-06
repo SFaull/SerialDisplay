@@ -70,14 +70,14 @@ static void display() {
     // check args are in valid range
     if(w > DISPLAY_BLOCK_SIZE || h > DISPLAY_BLOCK_SIZE)
     {
-        SerialUSB.println("Too large");
-        return;
+        //SerialUSB.println("Too large");
+        //return;
     }
 
     if(((x + w) >= DISPLAY_WIDTH) || ((y+h) >= DISPLAY_WIDTH))
     {
-        SerialUSB.println("Too large");
-        return;
+        //SerialUSB.println("Too large");
+        //return;
     }
     
     long pixelsRemaining = w * h;
