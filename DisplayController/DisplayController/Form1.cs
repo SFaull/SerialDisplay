@@ -12,8 +12,7 @@ namespace DisplayController
 {
     public partial class Form1 : Form
     {
-        Bitmap bitmap = new Bitmap(@"D:\Sam\Documents\Git\XiaoDisplay\Capture.PNG");
-        SerialDevice serialDevice;
+        DisplayController device;
 
         public Form1()
         {
@@ -22,63 +21,13 @@ namespace DisplayController
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            int blockSize = 60;
-            int xOffset = 0;
-            int yOffset = 0;
-
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    string cmd = string.Format("DISPLAY {0} {1} {2} {3}", xOffset, yOffset, blockSize, blockSize);
-                    serialDevice.SendExecuteCommand(cmd);
-
-                    UInt16[] pixArray = new UInt16[blockSize * blockSize];
-                    int index = 0;
-                    int xFinish = xOffset + blockSize;
-                    int yFinish = yOffset + blockSize;
-
-                    for (int y = yOffset; y < yFinish; y++)
-                    {
-                        for (int x = xOffset; x < xFinish; x++)
-                        {
-                            Color clr = bitmap.GetPixel(x, y);
-
-                            // convert the colour to r5g6b5
-                            pixArray[index] |= (UInt16)((UInt16)(clr.B & 0b11111000) << 8);
-                            pixArray[index] |= (UInt16)((UInt16)(clr.G & 0b11111100) << 3);
-                            pixArray[index] |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
-                            index++;
-                        }
-                    }
-
-                    for(int a = 0; a < pixArray.Length; a++)
-                    {
-                        pixArray[a] = SwitchEndianness(pixArray[a]);
-                    }
-
-                    byte[] result = new byte[pixArray.Length * sizeof(UInt16)];                    
-                    Buffer.BlockCopy(pixArray, 0, result, 0, result.Length);
-
-                    serialDevice.SendBytes(result);
-                    //MessageBox.Show(serialDevice.ReadLine());
-
-                    xOffset += 60;
-                }
-                yOffset += 60;
-                xOffset = 0;
-            }
-        }
-
-        public UInt16 SwitchEndianness(UInt16 i)
-        {
-            return (UInt16)((i << 8) + (i >> 8));
+            device.WriteImage(@"D:\Sam\Documents\Git\XiaoDisplay\Capture.PNG");
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            serialDevice = new SerialDevice();
-            bool success = serialDevice.Connect("COM20");
+            device = new DisplayController();
+            bool success = device.Connect("COM20");
             if (!success)
             {
                 MessageBox.Show("Failed");
@@ -87,20 +36,20 @@ namespace DisplayController
         }
         private void btnRead_Click(object sender, EventArgs e)
         {
-            string response = serialDevice.ReadLine();
+            string response = device.ReadLine();
             MessageBox.Show(response);
         }
 
         private void btnIDN_Click(object sender, EventArgs e)
         {
-            string response = serialDevice.SendRequestCommand("*IDN?");
+            string response = device.SendRequestCommand("*IDN?");
 
             MessageBox.Show(response);
         }
 
         private void btnGetBuff_Click(object sender, EventArgs e)
         {
-            string response = serialDevice.SendRequestCommand("BUFFER? 0 100");
+            string response = device.SendRequestCommand("BUFFER? 0 100");
             MessageBox.Show(response);
         }
     }

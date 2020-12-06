@@ -9,7 +9,7 @@ namespace DisplayController
 {
     class SerialDevice
     {
-        SerialPort port;
+        private SerialPort port;
 
         public SerialDevice()
         {
@@ -27,7 +27,7 @@ namespace DisplayController
         }
 
 
-        public bool Connect(string portName)
+        public bool Connect(string portName, int baudRate = 115200)
         {
             bool success = false;
             if (!IsConnected())
@@ -35,7 +35,7 @@ namespace DisplayController
                 port = new SerialPort(portName);
                 if (!port.IsOpen)
                 {
-                    port.BaudRate = 115200;
+                    port.BaudRate = baudRate;
                     port.DataBits = 8;
                     port.StopBits = StopBits.One;
                     port.Parity = Parity.None;
