@@ -37,7 +37,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(248, 40);
+            this.btnSend.Location = new System.Drawing.Point(713, 415);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 0;
@@ -57,7 +57,7 @@
             // 
             // btnRead
             // 
-            this.btnRead.Location = new System.Drawing.Point(479, 40);
+            this.btnRead.Location = new System.Drawing.Point(692, 24);
             this.btnRead.Name = "btnRead";
             this.btnRead.Size = new System.Drawing.Size(75, 23);
             this.btnRead.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             // btnIDN
             // 
-            this.btnIDN.Location = new System.Drawing.Point(372, 40);
+            this.btnIDN.Location = new System.Drawing.Point(585, 24);
             this.btnIDN.Name = "btnIDN";
             this.btnIDN.Size = new System.Drawing.Size(75, 23);
             this.btnIDN.TabIndex = 3;
@@ -77,7 +77,7 @@
             // 
             // btnGetBuff
             // 
-            this.btnGetBuff.Location = new System.Drawing.Point(248, 97);
+            this.btnGetBuff.Location = new System.Drawing.Point(495, 24);
             this.btnGetBuff.Name = "btnGetBuff";
             this.btnGetBuff.Size = new System.Drawing.Size(75, 23);
             this.btnGetBuff.TabIndex = 4;

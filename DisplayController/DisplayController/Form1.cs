@@ -12,7 +12,7 @@ namespace DisplayController
 {
     public partial class Form1 : Form
     {
-        Bitmap bitmap = new Bitmap(@"D:\Sam\Documents\Git\XiaoDisplay\spotify-logo-png-7053.png");
+        Bitmap bitmap = new Bitmap(@"D:\Sam\Documents\Git\XiaoDisplay\Capture.PNG");
         SerialDevice serialDevice;
 
         public Form1()
@@ -33,7 +33,7 @@ namespace DisplayController
                     string cmd = string.Format("DISPLAY {0} {1} {2} {3}", xOffset, yOffset, blockSize, blockSize);
                     serialDevice.SendExecuteCommand(cmd);
 
-                    Int16[] pixArray = new Int16[blockSize * blockSize];
+                    UInt16[] pixArray = new UInt16[blockSize * blockSize];
                     int index = 0;
                     int xFinish = xOffset + blockSize;
                     int yFinish = yOffset + blockSize;
@@ -45,9 +45,9 @@ namespace DisplayController
                             Color clr = bitmap.GetPixel(x, y);
 
                             // convert the colour to r5g6b5
-                            pixArray[index] |= (Int16)((clr.R & 0b11111000) << 8);
-                            pixArray[index] |= (Int16)((clr.G & 0b11111100) << 3);
-                            pixArray[index] |= (Int16)((clr.B & 0b11111000) >> 3);
+                            pixArray[index] |= (UInt16)((UInt16)(clr.B & 0b11111000) << 8);
+                            pixArray[index] |= (UInt16)((UInt16)(clr.G & 0b11111100) << 3);
+                            pixArray[index] |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
                             index++;
                         }
                     }
@@ -57,7 +57,7 @@ namespace DisplayController
                         pixArray[a] = SwitchEndianness(pixArray[a]);
                     }
 
-                    byte[] result = new byte[pixArray.Length * sizeof(Int16)];                    
+                    byte[] result = new byte[pixArray.Length * sizeof(UInt16)];                    
                     Buffer.BlockCopy(pixArray, 0, result, 0, result.Length);
 
                     serialDevice.SendBytes(result);
@@ -70,9 +70,9 @@ namespace DisplayController
             }
         }
 
-        public Int16 SwitchEndianness(Int16 i)
+        public UInt16 SwitchEndianness(UInt16 i)
         {
-            return (Int16)((i << 8) + (i >> 8));
+            return (UInt16)((i << 8) + (i >> 8));
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
