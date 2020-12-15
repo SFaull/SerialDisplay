@@ -95,14 +95,36 @@ namespace DisplayController
             return tiles;
         }
 
-
+        private List<Tile> TileHistory;
         public void WriteImage(Bitmap bitmap)
         {
+            // convert the image into tile
             List<Tile> tiles = DisplayController.ImageToTiles(bitmap);
+
+            List<Tile> tilesToTransfer = new List<Tile>();
             foreach (Tile tile in tiles)
+                tilesToTransfer.Add(tile);
+
+            /****** This section is to reduce the number of transfers *****/
+
+            // if tiles have already been sent, compare them to see if they are identical. These should be removed from the list
+            if((TileHistory != null) && (tilesToTransfer.Count == TileHistory.Count))
             {
-                this.UpdateTile(tile);
+                for(int i = tilesToTransfer.Count - 1; i >= 0; i--)
+                {
+                    if (tilesToTransfer[i].IsEqualTo(TileHistory[i]))
+                        tilesToTransfer.RemoveAt(i);
+                }
             }
+
+            /*****************************************************************/
+
+            foreach (Tile tile in tilesToTransfer)
+            {
+               this.UpdateTile(tile);
+            }
+
+            TileHistory = tiles;
         }
 
         public void WriteImage(string path)
@@ -166,6 +188,11 @@ namespace DisplayController
             Offset.Y = y;
             Width = w;
             Height = h;
+        }
+
+        public bool IsEqualTo(Tile other)
+        {
+            return PixelData.SequenceEqual(other.PixelData);
         }
 
 

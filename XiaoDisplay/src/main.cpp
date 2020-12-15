@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "commands.h"
 
-#define BAUD_RATE 115200
+#define BAUD_RATE 1000000//115200 <-- this doesn't actually matter, the init is a dummy function anyway. It's native USB
 
 
 /* make sure that User_Setup in eSPI library is configured with the following pins

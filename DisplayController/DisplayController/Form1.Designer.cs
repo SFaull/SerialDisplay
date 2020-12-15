@@ -37,6 +37,7 @@
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.btnScreenCapture = new System.Windows.Forms.Button();
             this.cbTimer = new System.Windows.Forms.CheckBox();
+            this.btnLoop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,11 +130,22 @@
             this.cbTimer.UseVisualStyleBackColor = true;
             this.cbTimer.CheckedChanged += new System.EventHandler(this.cbTimer_CheckedChanged);
             // 
+            // btnLoop
+            // 
+            this.btnLoop.Location = new System.Drawing.Point(713, 372);
+            this.btnLoop.Name = "btnLoop";
+            this.btnLoop.Size = new System.Drawing.Size(75, 23);
+            this.btnLoop.TabIndex = 9;
+            this.btnLoop.Text = "Loop";
+            this.btnLoop.UseVisualStyleBackColor = true;
+            this.btnLoop.Click += new System.EventHandler(this.btnLoop_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnLoop);
             this.Controls.Add(this.cbTimer);
             this.Controls.Add(this.btnScreenCapture);
             this.Controls.Add(this.pbPreview);
@@ -162,6 +174,7 @@
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.Button btnScreenCapture;
         private System.Windows.Forms.CheckBox cbTimer;
+        private System.Windows.Forms.Button btnLoop;
     }
 }
 

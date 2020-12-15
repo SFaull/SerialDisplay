@@ -67,6 +67,7 @@ static void display() {
     int w = atoi(arg[2]);
     int h = atoi(arg[3]);
 
+#if 0
     // check args are in valid range
     if(w > DISPLAY_BLOCK_SIZE || h > DISPLAY_BLOCK_SIZE)
     {
@@ -79,7 +80,8 @@ static void display() {
         //SerialUSB.println("Too large");
         //return;
     }
-    
+#endif
+
     long pixelsRemaining = w * h;
 
     // workout where in the display buffer we are starting based on the provided offset
@@ -104,6 +106,7 @@ static void display() {
         //*ptr = ( (pixel[0] * 0xFF) | (pixel[1] >> 8) );
         
         *ptr = ((pixel[0]<<8)+pixel[1]);
+
         // increment the buffer and decrement the pixels remaing counter
         ptr++;
         pixelsRemaining--;
@@ -111,6 +114,7 @@ static void display() {
 
     //now lets actually display the image
     tft.pushImage(x,y,DISPLAY_BLOCK_SIZE,DISPLAY_BLOCK_SIZE,display_buffer);
+    
 
 #if 0
     for(long i = 0; i < (w * h); i++)

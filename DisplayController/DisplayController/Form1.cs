@@ -162,5 +162,14 @@ namespace DisplayController
             device.WriteImage(img);
 
         }
+
+        private void btnLoop_Click(object sender, EventArgs e)
+        {
+            while(true)
+            {
+                GrabScreen();
+                device.WriteImage(img);
+            }
+        }
     }
 }
