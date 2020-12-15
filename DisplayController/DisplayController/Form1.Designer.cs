@@ -28,28 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSend = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnRead = new System.Windows.Forms.Button();
             this.btnIDN = new System.Windows.Forms.Button();
             this.btnGetBuff = new System.Windows.Forms.Button();
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.btnScreenCapture = new System.Windows.Forms.Button();
             this.cbTimer = new System.Windows.Forms.CheckBox();
-            this.btnLoop = new System.Windows.Forms.Button();
+            this.btnIconMode = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(713, 415);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.TabIndex = 0;
-            this.btnSend.Text = "Start";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // btnConnect
             // 
@@ -63,7 +51,7 @@
             // 
             // btnRead
             // 
-            this.btnRead.Location = new System.Drawing.Point(692, 24);
+            this.btnRead.Location = new System.Drawing.Point(713, 24);
             this.btnRead.Name = "btnRead";
             this.btnRead.Size = new System.Drawing.Size(75, 23);
             this.btnRead.TabIndex = 2;
@@ -73,7 +61,7 @@
             // 
             // btnIDN
             // 
-            this.btnIDN.Location = new System.Drawing.Point(585, 24);
+            this.btnIDN.Location = new System.Drawing.Point(632, 24);
             this.btnIDN.Name = "btnIDN";
             this.btnIDN.Size = new System.Drawing.Size(75, 23);
             this.btnIDN.TabIndex = 3;
@@ -83,7 +71,7 @@
             // 
             // btnGetBuff
             // 
-            this.btnGetBuff.Location = new System.Drawing.Point(495, 24);
+            this.btnGetBuff.Location = new System.Drawing.Point(551, 24);
             this.btnGetBuff.Name = "btnGetBuff";
             this.btnGetBuff.Size = new System.Drawing.Size(75, 23);
             this.btnGetBuff.TabIndex = 4;
@@ -109,52 +97,40 @@
             this.pbPreview.TabIndex = 6;
             this.pbPreview.TabStop = false;
             // 
-            // btnScreenCapture
-            // 
-            this.btnScreenCapture.Location = new System.Drawing.Point(678, 169);
-            this.btnScreenCapture.Name = "btnScreenCapture";
-            this.btnScreenCapture.Size = new System.Drawing.Size(79, 48);
-            this.btnScreenCapture.TabIndex = 7;
-            this.btnScreenCapture.Text = "Screen Capture";
-            this.btnScreenCapture.UseVisualStyleBackColor = true;
-            this.btnScreenCapture.Click += new System.EventHandler(this.btnScreenCapture_Click);
-            // 
             // cbTimer
             // 
             this.cbTimer.AutoSize = true;
-            this.cbTimer.Location = new System.Drawing.Point(604, 419);
+            this.cbTimer.Location = new System.Drawing.Point(285, 44);
             this.cbTimer.Name = "cbTimer";
-            this.cbTimer.Size = new System.Drawing.Size(52, 17);
+            this.cbTimer.Size = new System.Drawing.Size(96, 17);
             this.cbTimer.TabIndex = 8;
-            this.cbTimer.Text = "Timer";
+            this.cbTimer.Text = "Screen Stream";
             this.cbTimer.UseVisualStyleBackColor = true;
             this.cbTimer.CheckedChanged += new System.EventHandler(this.cbTimer_CheckedChanged);
             // 
-            // btnLoop
+            // btnIconMode
             // 
-            this.btnLoop.Location = new System.Drawing.Point(713, 372);
-            this.btnLoop.Name = "btnLoop";
-            this.btnLoop.Size = new System.Drawing.Size(75, 23);
-            this.btnLoop.TabIndex = 9;
-            this.btnLoop.Text = "Loop";
-            this.btnLoop.UseVisualStyleBackColor = true;
-            this.btnLoop.Click += new System.EventHandler(this.btnLoop_Click);
+            this.btnIconMode.Location = new System.Drawing.Point(189, 69);
+            this.btnIconMode.Name = "btnIconMode";
+            this.btnIconMode.Size = new System.Drawing.Size(75, 23);
+            this.btnIconMode.TabIndex = 9;
+            this.btnIconMode.Text = "Icon Mode";
+            this.btnIconMode.UseVisualStyleBackColor = true;
+            this.btnIconMode.Click += new System.EventHandler(this.btnIconMode_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnLoop);
+            this.Controls.Add(this.btnIconMode);
             this.Controls.Add(this.cbTimer);
-            this.Controls.Add(this.btnScreenCapture);
             this.Controls.Add(this.pbPreview);
             this.Controls.Add(this.btnLoadImage);
             this.Controls.Add(this.btnGetBuff);
             this.Controls.Add(this.btnIDN);
             this.Controls.Add(this.btnRead);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.btnSend);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
@@ -164,17 +140,14 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.Button btnIDN;
         private System.Windows.Forms.Button btnGetBuff;
         private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.Button btnScreenCapture;
         private System.Windows.Forms.CheckBox cbTimer;
-        private System.Windows.Forms.Button btnLoop;
+        private System.Windows.Forms.Button btnIconMode;
     }
 }
 
