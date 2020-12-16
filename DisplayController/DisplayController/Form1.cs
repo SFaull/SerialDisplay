@@ -24,10 +24,6 @@ namespace DisplayController
             InitializeComponent();
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
@@ -82,12 +78,6 @@ namespace DisplayController
                 }
             }
         }
-
-        private void btnScreenCapture_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         
 
         private void cbTimer_CheckedChanged(object sender, EventArgs e)
@@ -111,11 +101,6 @@ namespace DisplayController
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             displayManager.SetMousePosition(MousePosition.X, MousePosition.Y);
-        }
-
-        private void btnLoop_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnIconMode_Click(object sender, EventArgs e)

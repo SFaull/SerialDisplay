@@ -47,7 +47,8 @@ namespace DisplayController
 
         public void SetImage(Bitmap image)
         {
-            this.Frame = image;
+            this.Frame = image.Fit(240, 240);
+            this.Frame.Save("frame.png", ImageFormat.Png);
             this.FrameReady = true;
         }
 
@@ -160,9 +161,10 @@ namespace DisplayController
                 if (icon != null)
                 {
                     Bitmap _image = Bitmap.FromHicon(new Icon(icon, new Size(240, 240)).Handle);
-                    Bitmap resized = new Bitmap(_image, new Size(240, 240));
-                    //resized.Save("myfile.png", ImageFormat.Png);
-                    this.SetImage(resized);
+                    //Bitmap resized = _image.Fit(240, 240);
+                    //Bitmap resized = new Bitmap(_image, new Size(240, 240));
+                    
+                    this.SetImage(_image);
                 }
 
 
