@@ -36,7 +36,10 @@
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.cbTimer = new System.Windows.Forms.CheckBox();
             this.btnIconMode = new System.Windows.Forms.Button();
+            this.btnSetRotation = new System.Windows.Forms.Button();
+            this.pbTileView = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -91,6 +94,7 @@
             // 
             // pbPreview
             // 
+            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbPreview.Location = new System.Drawing.Point(86, 138);
             this.pbPreview.Name = "pbPreview";
             this.pbPreview.Size = new System.Drawing.Size(240, 240);
@@ -118,11 +122,32 @@
             this.btnIconMode.UseVisualStyleBackColor = true;
             this.btnIconMode.Click += new System.EventHandler(this.btnIconMode_Click);
             // 
+            // btnSetRotation
+            // 
+            this.btnSetRotation.Location = new System.Drawing.Point(713, 53);
+            this.btnSetRotation.Name = "btnSetRotation";
+            this.btnSetRotation.Size = new System.Drawing.Size(75, 23);
+            this.btnSetRotation.TabIndex = 10;
+            this.btnSetRotation.Text = "Rotate";
+            this.btnSetRotation.UseVisualStyleBackColor = true;
+            this.btnSetRotation.Click += new System.EventHandler(this.btnSetRotation_Click);
+            // 
+            // pbTileView
+            // 
+            this.pbTileView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbTileView.Location = new System.Drawing.Point(366, 138);
+            this.pbTileView.Name = "pbTileView";
+            this.pbTileView.Size = new System.Drawing.Size(240, 240);
+            this.pbTileView.TabIndex = 11;
+            this.pbTileView.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.pbTileView);
+            this.Controls.Add(this.btnSetRotation);
             this.Controls.Add(this.btnIconMode);
             this.Controls.Add(this.cbTimer);
             this.Controls.Add(this.pbPreview);
@@ -134,6 +159,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,6 +174,8 @@
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.CheckBox cbTimer;
         private System.Windows.Forms.Button btnIconMode;
+        private System.Windows.Forms.Button btnSetRotation;
+        private System.Windows.Forms.PictureBox pbTileView;
     }
 }
 

@@ -19,7 +19,8 @@ SerialCommand sCmd;     // The demo SerialCommand object
 TFT_eSPI tft = TFT_eSPI();  // Invoke custom library
 
 static void idn(void);
-static void display(void);
+static void display_set_rotation(void);
+static void display_block(void);
 static void print_buffer(void);
 static void unrecognized(const char *command);
 
@@ -31,8 +32,9 @@ void Commands::init()
   //tft.pushImage(179,0,DISPLAY_BLOCK_SIZE,DISPLAY_BLOCK_SIZE,image);
 
   sCmd.addCommand("*IDN?", idn);        // Echos the string argument back
-  sCmd.addCommand("DISPLAY", display);        // Echos the string argument back
+  sCmd.addCommand("DISPLAY", display_block);        // Echos the string argument back
   sCmd.addCommand("BUFFER?", print_buffer);        // Echos the string argument back
+  sCmd.addCommand("ROTATION", display_set_rotation);       
   sCmd.setDefaultHandler(unrecognized);      // Handler for command that isn't matched  (says "What?")
 }
 
@@ -45,8 +47,30 @@ static void idn() {
     SerialUSB.println("Xiao");
 }
 
+static void display_set_rotation() {
+    char *arg; // expect 1 arguments
+    arg = sCmd.next();
+    if(arg == NULL)
+    {
+        SerialUSB.println("Inavlid Args");
+        return; // any missing args and we exit the function
+    }
 
-static void display() {
+
+    // convert ASCII parameters to integers
+    int rotation = atoi(arg);
+
+    if(rotation < 0 || rotation > 3)
+    {
+        SerialUSB.println("Inavlid Args");
+        return; // any missing args and we exit the function
+    }
+
+    tft.setRotation(rotation);
+}
+
+
+static void display_block() {
     const uint8_t argc = 4;
     char *arg[argc]; // expect 4 arguments
 

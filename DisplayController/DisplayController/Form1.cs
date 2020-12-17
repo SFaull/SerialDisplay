@@ -35,7 +35,58 @@ namespace DisplayController
                 return;
             }
             displayManager = new DisplayManager(device);
+            displayManager.OnRefreshComplete += display_RefreshComplete;
+            displayManager.OnRefreshStart += display_RefreshStart;
+            device.OnStartTransferTiles += display_RefreshTileView;
+            
         }
+
+        private void display_RefreshTileView(object sender, EventArgs e)
+        {
+            List<Tile> tiles = sender as List<Tile>;
+
+            Bitmap frame = new Bitmap(240, 240);
+            using (Graphics g = Graphics.FromImage(frame)) { g.Clear(Color.White); }
+
+            foreach (Tile tile in tiles)
+            {
+                using (Graphics g = Graphics.FromImage(frame))
+                {
+                    g.DrawImage(tile.Image, new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Image.Width, tile.Image.Height));
+                }
+
+#if false
+
+
+                // save the actual tile bitmpa
+                Rectangle cropRect = new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Width, tile.Height);
+                //Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+                using (Graphics g = Graphics.FromImage(frame))
+                {
+                    g.DrawImage(tile.Image, new Rectangle(0, 0, tile.Image.Width, tile.Image.Height),
+                                     cropRect,
+                                     GraphicsUnit.Pixel);
+                }
+#endif
+            }
+
+            //frame.Save("delta.png", ImageFormat.Png);
+
+            pbTileView.Image = new Bitmap(frame);
+        }
+
+        private void display_RefreshStart(object sender, EventArgs e)
+        {
+            Bitmap frame = sender as Bitmap;
+
+            pbPreview.Image = new Bitmap(frame);
+        }
+
+        private void display_RefreshComplete(object sender, EventArgs e)
+        {
+            displayManager.SetMousePosition(MousePosition.X, MousePosition.Y);
+        }
+
         private void btnRead_Click(object sender, EventArgs e)
         {
             string response = device.ReadLine();
@@ -85,27 +136,21 @@ namespace DisplayController
             if(cbTimer.Checked)
             {
                 displayManager.SetMode(DisplayMode.ScreenStream);
-                displayRefresh.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                displayRefresh.Interval = 1000;
-                displayRefresh.Enabled = true;
             }
-            else
-            {
-                displayRefresh.Enabled = false;
-                displayRefresh.Elapsed -= OnTimedEvent;
-            }
-        }
-
-
-        // Specify what you want to happen when the Elapsed event is raised.
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            displayManager.SetMousePosition(MousePosition.X, MousePosition.Y);
         }
 
         private void btnIconMode_Click(object sender, EventArgs e)
         {
             displayManager.SetMode(DisplayMode.Icon);
+        }
+
+        int rotation = 0;
+        private void btnSetRotation_Click(object sender, EventArgs e)
+        {
+            device.SetRotation((DisplayRotation)rotation);
+            rotation++;
+            if (rotation >= 4)
+                rotation = 0;
         }
     }
 }

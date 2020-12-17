@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace DisplayController
 {
     class DisplayController : SerialDevice
     {
-        public static int MaxTileWidth { get; private set; } = 60;
-        public static int MaxTileHeight { get; private set; } = 60;
+        public static int MaxTileWidth { get; private set; } = 10;
+        public static int MaxTileHeight { get; private set; } = 10;
+
+        public event EventHandler OnStartTransferTiles;
 
 
         static List<Tile> ImageToTiles(Bitmap bitmap)
@@ -71,20 +74,33 @@ namespace DisplayController
                         }
                     }
 
+                    // swap the endianess of entire array
                     for (int a = 0; a < pixArray.Length; a++)
                     {
                         pixArray[a] = pixArray[a].SwitchEndianness();
                     }
-
+                    // copy into byte array
                     byte[] result = new byte[pixArray.Length * sizeof(UInt16)];
                     Buffer.BlockCopy(pixArray, 0, result, 0, result.Length);
 
+                    // save the actual tile bitmap
+                    Rectangle cropRect = new Rectangle(xOffset, yOffset, width, height);
+                    Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
+                    using (Graphics g = Graphics.FromImage(target))
+                    {
+                        g.DrawImage(bitmap, new Rectangle(0, 0, target.Width, target.Height),
+                                         cropRect,
+                                         GraphicsUnit.Pixel);
+                    }
+
+                    // put all of the data into a tile object
                     Tile tile = new Tile(xOffset, yOffset, width, height);
                     tile.PixelData = result;
+                    tile.Image = target;
+                    //tile.Image.Save("images/" + tile.Offset.X.ToString() + "-" + tile.Offset.Y.ToString() + ".png", ImageFormat.Png);
 
+                    // add it to the list
                     tiles.Add(tile);
-
-
 
                     xOffset += MaxTileWidth;
                 }
@@ -118,6 +134,8 @@ namespace DisplayController
             }
 
             /*****************************************************************/
+
+            OnStartTransferTiles?.Invoke(tilesToTransfer, EventArgs.Empty);
 
             foreach (Tile tile in tilesToTransfer)
             {
@@ -154,6 +172,14 @@ namespace DisplayController
             this.SendBytes(array);
         }
 
+        
+
+        public void SetRotation(DisplayRotation rotation)
+        {
+            string cmd = string.Format("ROTATION {0}", (int)rotation);
+            this.SendExecuteCommand(cmd);
+        }
+
 
     }
 
@@ -163,6 +189,7 @@ namespace DisplayController
         public int Width;
         public int Height;
         public byte[] PixelData;
+        public Bitmap Image;
 
         public bool IsValid
         {
@@ -202,6 +229,14 @@ namespace DisplayController
     {
         public int X { get; set; }
         public int Y { get; set; }
+    }
+
+    public enum DisplayRotation
+    {
+        Rotation_0 = 0,
+        Rotation_90 = 1,
+        Rotation_180 = 2,
+        Rotation_270 = 3,
     }
 
     public enum ImageLayout

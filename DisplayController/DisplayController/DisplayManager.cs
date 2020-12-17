@@ -26,6 +26,8 @@ namespace DisplayController
         private bool FrameReady;
         private int MouseX;
         private int MouseY;
+        public event EventHandler OnRefreshComplete;
+        public event EventHandler OnRefreshStart;
 
         public DisplayManager(DisplayController display)
         {
@@ -48,7 +50,7 @@ namespace DisplayController
         public void SetImage(Bitmap image)
         {
             this.Frame = image.Fit(240, 240);
-            this.Frame.Save("frame.png", ImageFormat.Png);
+           // this.Frame.Save("frame.png", ImageFormat.Png);
             this.FrameReady = true;
         }
 
@@ -66,7 +68,9 @@ namespace DisplayController
                 if (this.FrameReady)
                 {
                     this.FrameReady = false; // reset the flag
+                    OnRefreshStart?.Invoke(this.Frame, EventArgs.Empty);
                     this.Display.WriteImage(this.Frame);
+                    OnRefreshComplete?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
