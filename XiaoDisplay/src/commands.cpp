@@ -9,10 +9,10 @@
 #define DISPLAY_HEIGHT  240
 #define DISPLAY_PIXELS  (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 
-#define DISPLAY_BLOCK_SIZE   60
-#define DISPLAY_BLOCK_PIXELS  (DISPLAY_BLOCK_SIZE * DISPLAY_BLOCK_SIZE)
+#define MAX_DISPLAY_BLOCK_SIZE     110
+#define MAX_DISPLAY_BLOCK_PIXELS  (MAX_DISPLAY_BLOCK_SIZE * MAX_DISPLAY_BLOCK_SIZE)
 
-uint16_t display_buffer[DISPLAY_BLOCK_PIXELS] = {0};
+uint16_t display_buffer[MAX_DISPLAY_BLOCK_PIXELS] = {0};
 
 
 SerialCommand sCmd;     // The demo SerialCommand object
@@ -67,14 +67,13 @@ static void display() {
     int w = atoi(arg[2]);
     int h = atoi(arg[3]);
 
-#if 0
     // check args are in valid range
-    if(w > DISPLAY_BLOCK_SIZE || h > DISPLAY_BLOCK_SIZE)
+    if(w * h > MAX_DISPLAY_BLOCK_PIXELS)
     {
         //SerialUSB.println("Too large");
-        //return;
+        return;
     }
-
+#if 0
     if(((x + w) >= DISPLAY_WIDTH) || ((y+h) >= DISPLAY_WIDTH))
     {
         //SerialUSB.println("Too large");
@@ -113,7 +112,7 @@ static void display() {
     }
 
     //now lets actually display the image
-    tft.pushImage(x,y,DISPLAY_BLOCK_SIZE,DISPLAY_BLOCK_SIZE,display_buffer);
+    tft.pushImage(x,y,w,h,display_buffer);
     
 
 #if 0
