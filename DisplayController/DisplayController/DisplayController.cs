@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DisplayController
 {
-    class DisplayController : SerialDevice
+    public class DisplayController : SerialDevice
     {
         public static int MaxTileWidth { get; private set; } = 10;
         public static int MaxTileHeight { get; private set; } = 10;
@@ -180,6 +180,12 @@ namespace DisplayController
             this.SendExecuteCommand(cmd);
         }
 
+        public bool IsCorrectDevice()
+        {
+            string response = this.SendRequestCommand("*IDN?");
+
+            return (response.Contains("Xiao"));
+        }
 
     }
 

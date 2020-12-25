@@ -13,32 +13,30 @@ using System.Windows.Forms;
 
 namespace DisplayController
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        DisplayManager displayManager;
-        DisplayController device;
         System.Timers.Timer displayRefresh = new System.Timers.Timer();
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+
+#if false
+            AppManager.Instance.OnDisplayRefreshComplete += display_RefreshComplete;
+            AppManager.Instance.OnDisplayRefreshStarting += display_RefreshStart;
+            AppManager.Instance.OnDisplayRefreshingTiles += display_RefreshTileView;
+#endif
         }
 
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            device = new DisplayController();
-            bool success = device.Connect("COM20");
+            bool success = AppManager.Instance.ConnectToDisplay();
             if (!success)
             {
                 MessageBox.Show("Failed");
                 return;
             }
-            displayManager = new DisplayManager(device);
-            displayManager.OnRefreshComplete += display_RefreshComplete;
-            displayManager.OnRefreshStart += display_RefreshStart;
-            device.OnStartTransferTiles += display_RefreshTileView;
-            
         }
 
         private void display_RefreshTileView(object sender, EventArgs e)
@@ -84,25 +82,25 @@ namespace DisplayController
 
         private void display_RefreshComplete(object sender, EventArgs e)
         {
-            displayManager.SetMousePosition(MousePosition.X, MousePosition.Y);
+            AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
         }
 
         private void btnRead_Click(object sender, EventArgs e)
         {
-            string response = device.ReadLine();
+            string response = AppManager.Instance.Device.ReadLine();
             MessageBox.Show(response);
         }
 
         private void btnIDN_Click(object sender, EventArgs e)
         {
-            string response = device.SendRequestCommand("*IDN?");
+            string response = AppManager.Instance.Device.SendRequestCommand("*IDN?");
 
             MessageBox.Show(response);
         }
 
         private void btnGetBuff_Click(object sender, EventArgs e)
         {
-            string response = device.SendRequestCommand("BUFFER? 0 100");
+            string response = AppManager.Instance.Device.SendRequestCommand("BUFFER? 0 100");
             MessageBox.Show(response);
         }
 
@@ -122,8 +120,8 @@ namespace DisplayController
                     {
                         // location of you image
                         Bitmap img = new Bitmap(filePath);
-                        displayManager.SetMode(DisplayMode.StaticImage);
-                        displayManager.SetImage(img);
+                        AppManager.Instance.Display.SetMode(DisplayMode.StaticImage);
+                        AppManager.Instance.Display.SetImage(img);
 
                     }
                 }
@@ -135,19 +133,19 @@ namespace DisplayController
         {
             if(cbTimer.Checked)
             {
-                displayManager.SetMode(DisplayMode.ScreenStream);
+                AppManager.Instance.Display.SetMode(DisplayMode.ScreenStream);
             }
         }
 
         private void btnIconMode_Click(object sender, EventArgs e)
         {
-            displayManager.SetMode(DisplayMode.Icon);
+            AppManager.Instance.Display.SetMode(DisplayMode.Icon);
         }
 
         int rotation = 0;
         private void btnSetRotation_Click(object sender, EventArgs e)
         {
-            device.SetRotation((DisplayRotation)rotation);
+            AppManager.Instance.Device.SetRotation((DisplayRotation)rotation);
             rotation++;
             if (rotation >= 4)
                 rotation = 0;

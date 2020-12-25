@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DisplayController
 {
-    class SerialDevice
+    public class SerialDevice
     {
         private SerialPort port;
 

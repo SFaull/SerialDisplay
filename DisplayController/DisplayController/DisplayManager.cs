@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace DisplayController
 {
-    enum DisplayMode
+    public enum DisplayMode
     {
         None,
         StaticImage,
@@ -18,7 +18,7 @@ namespace DisplayController
         Icon,
     }
 
-    class DisplayManager
+    public class DisplayManager
     {
         private DisplayController Display;
         private Bitmap Frame;
