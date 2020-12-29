@@ -20,7 +20,10 @@ namespace SerialDeviceDriver
         public static int DisplayHeight { get; private set; } = 240;
         public static int DisplayWidth{ get; private set; } = 240;
 
-        public event EventHandler OnStartTransferTiles;
+        public event EventHandler OnFrameTranferStart;
+        public event EventHandler OnFrameTransferComplete;
+        public event EventHandler OnTileTranferStart;
+        public event EventHandler OnTileTransferComplete;
 
         private TiledFrame LastFrame;
         private TiledFrame CurrentFrame;
@@ -47,11 +50,21 @@ namespace SerialDeviceDriver
                 this.CurrentFrame.GetTiledFrameDelta(this.LastFrame, out tiles);  // todo check successful
 
             // fire a transfer started event
-            OnStartTransferTiles?.Invoke(tiles, EventArgs.Empty);
+            List<Bitmap> bitmaps = new List<Bitmap>();
+            bitmaps.Add(this.CurrentFrame.Image);
+            bitmaps.Add(Tile.GenerateBitmapFromTiles(tiles));
+
+            OnFrameTranferStart?.Invoke(bitmaps, EventArgs.Empty);
 
             // actually write each of the tiles to the display
             foreach (Tile tile in tiles)
+            {
+                OnTileTranferStart?.Invoke(tile, EventArgs.Empty);
                 this.UpdateTile(tile);
+                OnTileTransferComplete?.Invoke(tile, EventArgs.Empty);
+            }
+
+            OnFrameTransferComplete?.Invoke(bitmaps, EventArgs.Empty);
         }
 
         public void WriteImage(string path)

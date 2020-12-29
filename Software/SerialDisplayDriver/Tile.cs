@@ -1,6 +1,7 @@
 ﻿
 using System.Linq;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace SerialDeviceDriver
 {
@@ -49,6 +50,21 @@ namespace SerialDeviceDriver
             return PixelData.SequenceEqual(other.PixelData);
         }
 
+        public static Bitmap GenerateBitmapFromTiles(List<Tile> tiles)
+        {
+            Bitmap frame = new Bitmap(240, 240);    // todo don't hardcode this
 
+            using (Graphics g = Graphics.FromImage(frame)) { g.Clear(Color.White); }
+
+            foreach (Tile tile in tiles)
+            {
+                using (Graphics g = Graphics.FromImage(frame))
+                {
+                    g.DrawImage(tile.Image, new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Image.Width, tile.Image.Height));
+                }
+            }
+
+            return new Bitmap(frame);
+        }
     }
 }

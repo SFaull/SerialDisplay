@@ -78,7 +78,7 @@ namespace SerialDeviceDriver
                 }
             }
 
-            Console.WriteLine("Arduino: " + str);
+            //Console.WriteLine("Arduino: " + str);
             return str;
         }
 
@@ -91,7 +91,7 @@ namespace SerialDeviceDriver
                 {
                     port.DiscardOutBuffer();
                     port.DiscardInBuffer();
-                    Console.WriteLine("PC: " + str);
+                    //Console.WriteLine("PC: " + str);
                     port.WriteLine(str);
                 }
                 catch   // timeout

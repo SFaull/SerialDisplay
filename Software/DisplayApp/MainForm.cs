@@ -22,11 +22,10 @@ namespace DisplayApp
         {
             InitializeComponent();
 
-#if false
-            AppManager.Instance.OnDisplayRefreshComplete += display_RefreshComplete;
-            AppManager.Instance.OnDisplayRefreshStarting += display_RefreshStart;
-            AppManager.Instance.OnDisplayRefreshingTiles += display_RefreshTileView;
-#endif
+
+            AppManager.Instance.OnDisplayUpdateComplete += Display_UpdateComplete;
+            AppManager.Instance.OnDisplayUpdateStart += Display_UpdateStart;
+
         }
 
 
@@ -38,52 +37,23 @@ namespace DisplayApp
                 MessageBox.Show("Failed");
                 return;
             }
+            btnConnect.Enabled = false;
         }
 
-        private void display_RefreshTileView(object sender, EventArgs e)
+        private void Display_UpdateStart(object sender, EventArgs e)
         {
-            List<Tile> tiles = sender as List<Tile>;
+            List<Bitmap> bitmaps = sender as List<Bitmap>;
 
-            Bitmap frame = new Bitmap(240, 240);
-            using (Graphics g = Graphics.FromImage(frame)) { g.Clear(Color.White); }
+            if (bitmaps.Count < 2)
+                return;
 
-            foreach (Tile tile in tiles)
-            {
-                using (Graphics g = Graphics.FromImage(frame))
-                {
-                    g.DrawImage(tile.Image, new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Image.Width, tile.Image.Height));
-                }
-
-#if false
-
-
-                // save the actual tile bitmpa
-                Rectangle cropRect = new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Width, tile.Height);
-                //Bitmap target = new Bitmap(cropRect.Width, cropRect.Height);
-                using (Graphics g = Graphics.FromImage(frame))
-                {
-                    g.DrawImage(tile.Image, new Rectangle(0, 0, tile.Image.Width, tile.Image.Height),
-                                     cropRect,
-                                     GraphicsUnit.Pixel);
-                }
-#endif
-            }
-
-            //frame.Save("delta.png", ImageFormat.Png);
-
-            pbTileView.Image = new Bitmap(frame);
+            pbPreview.Image = new Bitmap(bitmaps.ElementAt(0));
+            pbTileView.Image = new Bitmap(bitmaps.ElementAt(1));
         }
 
-        private void display_RefreshStart(object sender, EventArgs e)
+        private void Display_UpdateComplete(object sender, EventArgs e)
         {
-            Bitmap frame = sender as Bitmap;
-
-            pbPreview.Image = new Bitmap(frame);
-        }
-
-        private void display_RefreshComplete(object sender, EventArgs e)
-        {
-            AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
+            //AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
         }
 
         private void btnRead_Click(object sender, EventArgs e)

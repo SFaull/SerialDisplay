@@ -36,6 +36,9 @@ namespace DisplayApp
         public SerialDisplay Device;
         public DisplayManager Display;
 
+        public event EventHandler OnDisplayUpdateStart;
+        public event EventHandler OnDisplayUpdateComplete;
+
         public AppManager()
         {
 
@@ -89,32 +92,24 @@ namespace DisplayApp
             
             if (found)
             {
-                Display = new DisplayManager(Device);
+                this.Display = new DisplayManager(Device);
+                this.Device.OnFrameTranferStart += Display_OnFrameTransferStart;
+                this.Device.OnFrameTransferComplete += Display_OnFrameTransferComplete;
             }
 
             return found;
         }
 
-        #region Event Bubbling
-#if false
-        public event EventHandler OnDisplayRefreshStarting
+
+
+        private void Display_OnFrameTransferStart(object sender, EventArgs e)
         {
-            add { this.Display.OnRefreshStart += value; }
-            remove { this.Display.OnRefreshStart -= value; }
+            OnDisplayUpdateStart?.BeginInvoke(sender, EventArgs.Empty, null, null);
         }
 
-        public event EventHandler OnDisplayRefreshComplete
+        private void Display_OnFrameTransferComplete(object sender, EventArgs e)
         {
-            add { this.Display.OnRefreshComplete += value; }
-            remove { this.Display.OnRefreshComplete -= value; }
+            OnDisplayUpdateComplete?.BeginInvoke(sender, EventArgs.Empty, null, null);
         }
-
-        public event EventHandler OnDisplayRefreshingTiles
-        {
-            add { this.Device.OnStartTransferTiles += value; }
-            remove { this.Device.OnStartTransferTiles -= value; }
-        }
-#endif
-#endregion
     }
 }
