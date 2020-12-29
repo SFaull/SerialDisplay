@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AppManager.cs" />
     <Compile Include="DisplayManager.cs" />
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

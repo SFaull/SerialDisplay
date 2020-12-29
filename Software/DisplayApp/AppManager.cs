@@ -59,7 +59,9 @@ namespace DisplayApp
             bool found = false;
             Device = new SerialDisplay();
 
-            var comPorts = SerialDisplay.GetComPorts();
+            var comPorts = SerialDisplay.GetComPorts().ToList();
+
+            OrderComPortList(comPorts);
 
             foreach(var comPort in comPorts)
             {
@@ -73,6 +75,8 @@ namespace DisplayApp
                         if (Device.IsCorrectDevice())
                         {
                             found = true;
+                            Properties.Settings.Default.LastComPort = comPort;
+                            Properties.Settings.Default.Save();
                             break;
                         }
                         else
@@ -94,13 +98,30 @@ namespace DisplayApp
             {
                 this.Display = new DisplayManager(Device);
                 this.Device.OnFrameTranferStart += Display_OnFrameTransferStart;
-                this.Device.OnFrameTransferComplete += Display_OnFrameTransferComplete;
+                this.Device.OnFrameTransferComplete += Display_OnFrameTransferComplete;                
             }
 
             return found;
         }
 
+        private bool OrderComPortList(List<string> comPortList)
+        {
+            string lastComPort = Properties.Settings.Default.LastComPort;
 
+            if (string.IsNullOrEmpty(lastComPort))
+                return false;
+
+            int index = comPortList.FindIndex(a => a.Equals(lastComPort));
+
+            if (index < 0)
+                return false;
+
+            comPortList.MoveItemAtIndexToFront(index);
+
+            return true;
+        }
+
+        #region Event Handlers
 
         private void Display_OnFrameTransferStart(object sender, EventArgs e)
         {
@@ -111,5 +132,7 @@ namespace DisplayApp
         {
             OnDisplayUpdateComplete?.BeginInvoke(sender, EventArgs.Empty, null, null);
         }
+
+        #endregion
     }
 }
