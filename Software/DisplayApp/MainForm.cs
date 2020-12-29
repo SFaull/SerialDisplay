@@ -110,7 +110,7 @@ namespace DisplayApp
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
