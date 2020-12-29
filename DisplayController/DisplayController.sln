@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayController", "DisplayController\DisplayController.csproj", "{BEEAC8D4-0ACC-4639-B1DB-4A268EF383B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayApp", "DisplayApp\DisplayApp.csproj", "{BEEAC8D4-0ACC-4639-B1DB-4A268EF383B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerialDisplayDriver", "SerialDisplayDriver\SerialDisplayDriver.csproj", "{AC0C3AB5-578B-4EE3-890C-6F6D338757BC}"
 EndProject

@@ -1,4 +1,4 @@
-﻿namespace DisplayController
+﻿namespace DisplayApp
 {
     partial class MainForm
     {

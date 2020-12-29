@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SerialDeviceDriver;
 
-namespace DisplayController
+namespace DisplayApp
 {
     public sealed class AppManager
     {

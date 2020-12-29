@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SerialDeviceDriver;
 
-namespace DisplayController
+namespace DisplayApp
 {
     public enum DisplayMode
     {

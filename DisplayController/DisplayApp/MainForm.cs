@@ -12,7 +12,7 @@ using System.Timers;
 using System.Windows.Forms;
 using SerialDeviceDriver;
 
-namespace DisplayController
+namespace DisplayApp
 {
     public partial class MainForm : Form
     {
