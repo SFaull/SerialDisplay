@@ -38,6 +38,7 @@ namespace DisplayApp
                 return;
             }
             btnConnect.Enabled = false;
+            gbMain.Visible = true;
         }
 
         private void Display_UpdateStart(object sender, EventArgs e)
