@@ -7,6 +7,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SerialDeviceDriver;
 
 namespace DisplayController
 {
@@ -20,7 +21,7 @@ namespace DisplayController
 
     public class DisplayManager
     {
-        private DisplayController Display;
+        private SerialDisplay Display;
         private Bitmap Frame;
         private DisplayMode Mode;
         private bool FrameReady;
@@ -29,7 +30,7 @@ namespace DisplayController
         public event EventHandler OnRefreshComplete;
         public event EventHandler OnRefreshStart;
 
-        public DisplayManager(DisplayController display)
+        public DisplayManager(SerialDisplay display)
         {
             this.Display = display;
             this.FrameReady = false;

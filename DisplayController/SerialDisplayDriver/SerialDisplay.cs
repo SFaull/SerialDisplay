@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DisplayController
+namespace SerialDeviceDriver
 {
-    public class DisplayController : SerialDevice
+    public enum DisplayRotation
+    {
+        Rotation_0 = 0,
+        Rotation_90 = 1,
+        Rotation_180 = 2,
+        Rotation_270 = 3,
+    }
+
+    public class SerialDisplay : SerialDevice
     {
         public static int MaxTileWidth { get; private set; } = 10;
         public static int MaxTileHeight { get; private set; } = 10;
@@ -115,7 +119,7 @@ namespace DisplayController
         public void WriteImage(Bitmap bitmap)
         {
             // convert the image into tile
-            List<Tile> tiles = DisplayController.ImageToTiles(bitmap);
+            List<Tile> tiles = SerialDisplay.ImageToTiles(bitmap);
 
             List<Tile> tilesToTransfer = new List<Tile>();
             foreach (Tile tile in tiles)
@@ -124,9 +128,9 @@ namespace DisplayController
             /****** This section is to reduce the number of transfers *****/
 
             // if tiles have already been sent, compare them to see if they are identical. These should be removed from the list
-            if((TileHistory != null) && (tilesToTransfer.Count == TileHistory.Count))
+            if ((TileHistory != null) && (tilesToTransfer.Count == TileHistory.Count))
             {
-                for(int i = tilesToTransfer.Count - 1; i >= 0; i--)
+                for (int i = tilesToTransfer.Count - 1; i >= 0; i--)
                 {
                     if (tilesToTransfer[i].IsEqualTo(TileHistory[i]))
                         tilesToTransfer.RemoveAt(i);
@@ -139,7 +143,7 @@ namespace DisplayController
 
             foreach (Tile tile in tilesToTransfer)
             {
-               this.UpdateTile(tile);
+                this.UpdateTile(tile);
             }
 
             TileHistory = tiles;
@@ -161,7 +165,7 @@ namespace DisplayController
             this.SendBytes(tile.PixelData);
         }
 
-        
+
 
         public void UpdateTile(int x, int y, int w, int h, byte[] array)
         {
@@ -172,7 +176,7 @@ namespace DisplayController
             this.SendBytes(array);
         }
 
-        
+
 
         public void SetRotation(DisplayRotation rotation)
         {
@@ -188,125 +192,4 @@ namespace DisplayController
         }
 
     }
-
-    public class Tile
-    {
-        public TileOffset Offset;
-        public int Width;
-        public int Height;
-        public byte[] PixelData;
-        public Bitmap Image;
-
-        public bool IsValid
-        {
-            get
-            {
-                return (Offset.X >= 0 && Offset.Y >= 0 && Width >= 0 && Height >= 0);
-            }
-        }
-
-        // TODO: add reference to source image?
-
-        public Tile()
-        {
-            Offset.X = -1;
-            Offset.Y = -1;
-            Width = -1;
-            Height = -1;
-        }
-
-        public Tile(int x, int y, int w, int h)
-        {
-            Offset.X = x;
-            Offset.Y = y;
-            Width = w;
-            Height = h;
-        }
-
-        public bool IsEqualTo(Tile other)
-        {
-            return PixelData.SequenceEqual(other.PixelData);
-        }
-
-
-    }
-
-    public struct TileOffset
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-    }
-
-    public enum DisplayRotation
-    {
-        Rotation_0 = 0,
-        Rotation_90 = 1,
-        Rotation_180 = 2,
-        Rotation_270 = 3,
-    }
-
-    public enum ImageLayout
-    {
-        Stretch,        // strech without maining aspect ratio
-        FitAspectRatio, // stretch to max size, but maintain aspect ratio  
-        Center  // don't resize, just put in the center
-    }
-
-    public static class BitmapExtensions
-    {
-        public static Bitmap Fit(this Bitmap original, int width, int height, ImageLayout layout = ImageLayout.FitAspectRatio)
-        {
-            Bitmap modified = null;
-
-            switch (layout)
-            {
-                case ImageLayout.Center:
-                        // TODO
-                    break;
-                case ImageLayout.FitAspectRatio:
-                    double scaleX = (double)original.Width / (double)width;
-                    double scaleY = (double)original.Height / (double)height;
-                    double scale;
-                    if(scaleX > scaleY)
-                    {
-                        // make the x axis fit
-                        scale = scaleX;
-                    }
-                    else if (scaleY > scaleX)
-                    {
-                        // make the y axis fit
-                        scale = scaleY;
-                    }
-                    else
-                    {
-                        // it doesn't matter
-                        scale = scaleX;
-                    }
-                    int x = (int)Math.Floor((double)original.Width / scale);
-                    int y = (int)Math.Floor((double)original.Height / scale);
-                    modified = new Bitmap(original, new Size(x, y));
-
-                    Bitmap bmp = new Bitmap(width, height);
-                    using (Graphics g = Graphics.FromImage(bmp))
-                    {
-                        Rectangle ImageSize = new Rectangle(0, 0, width, height);
-                        g.FillRectangle(Brushes.Black, ImageSize);
-                        g.DrawImage(modified, 0, 0);
-                    }
-
-                    modified = bmp;
-
-                    break;
-                case ImageLayout.Stretch:
-                    modified = new Bitmap(original, new Size(width, height));
-                    break;
-                default:
-                    modified = original;
-                    break;
-            }
-
-            return modified;
-        }
-    }
-        
 }

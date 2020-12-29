@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DisplayController
+namespace SerialDeviceDriver
 {
-    public static class Extensions
+    public static class UInt16Extensions
     {
         public static UInt16 SwitchEndianness(this UInt16 i)
         {

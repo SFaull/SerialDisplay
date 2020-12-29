@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SerialDeviceDriver;
 
 namespace DisplayController
 {
@@ -32,7 +33,7 @@ namespace DisplayController
 
         #endregion
 
-        public DisplayController Device;
+        public SerialDisplay Device;
         public DisplayManager Display;
 
         public AppManager()
@@ -53,9 +54,9 @@ namespace DisplayController
         public bool ConnectToDisplay()
         {
             bool found = false;
-            Device = new DisplayController();
+            Device = new SerialDisplay();
 
-            var comPorts = DisplayController.GetComPorts();
+            var comPorts = SerialDisplay.GetComPorts();
 
             foreach(var comPort in comPorts)
             {
