@@ -20,7 +20,7 @@ namespace SerialDeviceDriver
         public static int DisplayHeight { get; private set; } = 240;
         public static int DisplayWidth{ get; private set; } = 240;
 
-        public event EventHandler OnFrameTranferStart;
+        public event EventHandler OnFrameTransferStart;
         public event EventHandler OnFrameTransferComplete;
         public event EventHandler OnTileTranferStart;
         public event EventHandler OnTileTransferComplete;
@@ -54,7 +54,7 @@ namespace SerialDeviceDriver
             bitmaps.Add(this.CurrentFrame.Image);
             bitmaps.Add(Tile.GenerateBitmapFromTiles(tiles));
 
-            OnFrameTranferStart?.Invoke(bitmaps, EventArgs.Empty);
+            OnFrameTransferStart?.Invoke(bitmaps, EventArgs.Empty);
 
             // actually write each of the tiles to the display
             foreach (Tile tile in tiles)

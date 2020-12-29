@@ -34,22 +34,22 @@
             this.btnGetBuff = new System.Windows.Forms.Button();
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.cbTimer = new System.Windows.Forms.CheckBox();
             this.btnIconMode = new System.Windows.Forms.Button();
             this.btnSetRotation = new System.Windows.Forms.Button();
             this.pbTileView = new System.Windows.Forms.PictureBox();
             this.gbMain = new System.Windows.Forms.GroupBox();
-            this.gbDiagnostics = new System.Windows.Forms.GroupBox();
-            this.gbControls = new System.Windows.Forms.GroupBox();
             this.gbDisplayPreview = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.gbControls = new System.Windows.Forms.GroupBox();
+            this.gbDiagnostics = new System.Windows.Forms.GroupBox();
+            this.btnScreenStream = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
             this.gbMain.SuspendLayout();
-            this.gbDiagnostics.SuspendLayout();
-            this.gbControls.SuspendLayout();
             this.gbDisplayPreview.SuspendLayout();
+            this.gbControls.SuspendLayout();
+            this.gbDiagnostics.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -111,20 +111,9 @@
             this.pbPreview.TabIndex = 6;
             this.pbPreview.TabStop = false;
             // 
-            // cbTimer
-            // 
-            this.cbTimer.AutoSize = true;
-            this.cbTimer.Location = new System.Drawing.Point(197, 23);
-            this.cbTimer.Name = "cbTimer";
-            this.cbTimer.Size = new System.Drawing.Size(96, 17);
-            this.cbTimer.TabIndex = 8;
-            this.cbTimer.Text = "Screen Stream";
-            this.cbTimer.UseVisualStyleBackColor = true;
-            this.cbTimer.CheckedChanged += new System.EventHandler(this.cbTimer_CheckedChanged);
-            // 
             // btnIconMode
             // 
-            this.btnIconMode.Location = new System.Drawing.Point(96, 19);
+            this.btnIconMode.Location = new System.Drawing.Point(87, 19);
             this.btnIconMode.Name = "btnIconMode";
             this.btnIconMode.Size = new System.Drawing.Size(75, 23);
             this.btnIconMode.TabIndex = 9;
@@ -163,6 +152,49 @@
             this.gbMain.TabStop = false;
             this.gbMain.Visible = false;
             // 
+            // gbDisplayPreview
+            // 
+            this.gbDisplayPreview.Controls.Add(this.label2);
+            this.gbDisplayPreview.Controls.Add(this.label1);
+            this.gbDisplayPreview.Controls.Add(this.pbPreview);
+            this.gbDisplayPreview.Controls.Add(this.pbTileView);
+            this.gbDisplayPreview.Location = new System.Drawing.Point(20, 78);
+            this.gbDisplayPreview.Name = "gbDisplayPreview";
+            this.gbDisplayPreview.Size = new System.Drawing.Size(520, 292);
+            this.gbDisplayPreview.TabIndex = 14;
+            this.gbDisplayPreview.TabStop = false;
+            this.gbDisplayPreview.Text = "Preview";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(257, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Transferred:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Frame:";
+            // 
+            // gbControls
+            // 
+            this.gbControls.Controls.Add(this.btnScreenStream);
+            this.gbControls.Controls.Add(this.btnLoadImage);
+            this.gbControls.Controls.Add(this.btnIconMode);
+            this.gbControls.Location = new System.Drawing.Point(20, 19);
+            this.gbControls.Name = "gbControls";
+            this.gbControls.Size = new System.Drawing.Size(520, 53);
+            this.gbControls.TabIndex = 13;
+            this.gbControls.TabStop = false;
+            this.gbControls.Text = "Controls";
+            // 
             // gbDiagnostics
             // 
             this.gbDiagnostics.Controls.Add(this.btnGetBuff);
@@ -177,48 +209,15 @@
             this.gbDiagnostics.TabStop = false;
             this.gbDiagnostics.Text = "Diagnostics";
             // 
-            // gbControls
+            // btnScreenStream
             // 
-            this.gbControls.Controls.Add(this.btnLoadImage);
-            this.gbControls.Controls.Add(this.cbTimer);
-            this.gbControls.Controls.Add(this.btnIconMode);
-            this.gbControls.Location = new System.Drawing.Point(20, 19);
-            this.gbControls.Name = "gbControls";
-            this.gbControls.Size = new System.Drawing.Size(520, 53);
-            this.gbControls.TabIndex = 13;
-            this.gbControls.TabStop = false;
-            this.gbControls.Text = "Controls";
-            // 
-            // gbDisplayPreview
-            // 
-            this.gbDisplayPreview.Controls.Add(this.label2);
-            this.gbDisplayPreview.Controls.Add(this.label1);
-            this.gbDisplayPreview.Controls.Add(this.pbPreview);
-            this.gbDisplayPreview.Controls.Add(this.pbTileView);
-            this.gbDisplayPreview.Location = new System.Drawing.Point(20, 78);
-            this.gbDisplayPreview.Name = "gbDisplayPreview";
-            this.gbDisplayPreview.Size = new System.Drawing.Size(520, 292);
-            this.gbDisplayPreview.TabIndex = 14;
-            this.gbDisplayPreview.TabStop = false;
-            this.gbDisplayPreview.Text = "Preview";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Frame:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(257, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Transferred:";
+            this.btnScreenStream.Location = new System.Drawing.Point(168, 19);
+            this.btnScreenStream.Name = "btnScreenStream";
+            this.btnScreenStream.Size = new System.Drawing.Size(122, 23);
+            this.btnScreenStream.TabIndex = 10;
+            this.btnScreenStream.Text = "Screen Stream Mode";
+            this.btnScreenStream.UseVisualStyleBackColor = true;
+            this.btnScreenStream.Click += new System.EventHandler(this.btnScreenStream_Click);
             // 
             // MainForm
             // 
@@ -232,11 +231,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).EndInit();
             this.gbMain.ResumeLayout(false);
-            this.gbDiagnostics.ResumeLayout(false);
-            this.gbControls.ResumeLayout(false);
-            this.gbControls.PerformLayout();
             this.gbDisplayPreview.ResumeLayout(false);
             this.gbDisplayPreview.PerformLayout();
+            this.gbControls.ResumeLayout(false);
+            this.gbDiagnostics.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -248,7 +246,6 @@
         private System.Windows.Forms.Button btnGetBuff;
         private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.CheckBox cbTimer;
         private System.Windows.Forms.Button btnIconMode;
         private System.Windows.Forms.Button btnSetRotation;
         private System.Windows.Forms.PictureBox pbTileView;
@@ -258,6 +255,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox gbControls;
         private System.Windows.Forms.GroupBox gbDiagnostics;
+        private System.Windows.Forms.Button btnScreenStream;
     }
 }
 

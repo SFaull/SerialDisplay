@@ -97,7 +97,7 @@ namespace DisplayApp
             if (found)
             {
                 this.Display = new DisplayManager(Device);
-                this.Device.OnFrameTranferStart += Display_OnFrameTransferStart;
+                this.Device.OnFrameTransferStart += Display_OnFrameTransferStart;
                 this.Device.OnFrameTransferComplete += Display_OnFrameTransferComplete;                
             }
 

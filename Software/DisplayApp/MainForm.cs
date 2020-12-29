@@ -16,8 +16,6 @@ namespace DisplayApp
 {
     public partial class MainForm : Form
     {
-        System.Timers.Timer displayRefresh = new System.Timers.Timer();
-
         public MainForm()
         {
             InitializeComponent();
@@ -28,10 +26,9 @@ namespace DisplayApp
 
         }
 
-
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            bool success = AppManager.Instance.ConnectToDisplay();
+            bool success = AppManager.Instance.ConnectToDisplay();  // warning: this function blocks
             if (!success)
             {
                 MessageBox.Show("Failed");
@@ -40,6 +37,8 @@ namespace DisplayApp
             btnConnect.Enabled = false;
             gbMain.Visible = true;
         }
+
+        #region Event Handlers
 
         private void Display_UpdateStart(object sender, EventArgs e)
         {
@@ -54,7 +53,62 @@ namespace DisplayApp
 
         private void Display_UpdateComplete(object sender, EventArgs e)
         {
-            //AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
+            if(AppManager.Instance.Display.Mode == DisplayMode.ScreenStream)
+                AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
+        }
+
+        #endregion
+
+
+
+        #region Controls
+
+        private void btnLoadImage_Click(object sender, EventArgs e)
+        {
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    string filePath = openFileDialog.FileName;
+                    if (File.Exists(filePath))
+                    {
+                        // location of you image
+                        Bitmap img = new Bitmap(filePath);
+                        AppManager.Instance.Display.SetMode(DisplayMode.StaticImage);
+                        AppManager.Instance.Display.SetImage(img);
+
+                    }
+                }
+            }
+        }
+
+        private void btnScreenStream_Click(object sender, EventArgs e)
+        {
+            AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
+            AppManager.Instance.Display.SetMode(DisplayMode.ScreenStream);
+        }
+
+        private void btnIconMode_Click(object sender, EventArgs e)
+        {
+            AppManager.Instance.Display.SetMode(DisplayMode.Icon);
+        }
+
+        #endregion
+
+        #region Diagnostics
+
+        int rotation = 0;
+        private void btnSetRotation_Click(object sender, EventArgs e)
+        {
+            AppManager.Instance.Device.SetRotation((DisplayRotation)rotation);
+            rotation++;
+            if (rotation >= 4)
+                rotation = 0;
         }
 
         private void btnRead_Click(object sender, EventArgs e)
@@ -76,51 +130,6 @@ namespace DisplayApp
             MessageBox.Show(response);
         }
 
-        private void btnLoadImage_Click(object sender, EventArgs e)
-        {
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //Get the path of specified file
-                    string filePath = openFileDialog.FileName;
-                    if(File.Exists(filePath))
-                    {
-                        // location of you image
-                        Bitmap img = new Bitmap(filePath);
-                        AppManager.Instance.Display.SetMode(DisplayMode.StaticImage);
-                        AppManager.Instance.Display.SetImage(img);
-
-                    }
-                }
-            }
-        }
-        
-
-        private void cbTimer_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cbTimer.Checked)
-            {
-                AppManager.Instance.Display.SetMode(DisplayMode.ScreenStream);
-            }
-        }
-
-        private void btnIconMode_Click(object sender, EventArgs e)
-        {
-            AppManager.Instance.Display.SetMode(DisplayMode.Icon);
-        }
-
-        int rotation = 0;
-        private void btnSetRotation_Click(object sender, EventArgs e)
-        {
-            AppManager.Instance.Device.SetRotation((DisplayRotation)rotation);
-            rotation++;
-            if (rotation >= 4)
-                rotation = 0;
-        }
+        #endregion
     }
 }

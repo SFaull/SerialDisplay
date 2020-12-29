@@ -23,7 +23,7 @@ namespace DisplayApp
     {
         private SerialDisplay Display;
         private Bitmap Frame;
-        private DisplayMode Mode;
+        public DisplayMode Mode { get; private set; }
         private bool FrameReady;
         private int MouseX;
         private int MouseY;
@@ -36,6 +36,7 @@ namespace DisplayApp
             this.FrameReady = false;
             this.Start();
         }
+
 
         public void SetMode(DisplayMode mode)
         {
