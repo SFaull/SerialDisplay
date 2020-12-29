@@ -228,7 +228,7 @@
             this.Controls.Add(this.gbMain);
             this.Controls.Add(this.btnConnect);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Serial Display App";
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).EndInit();
             this.gbMain.ResumeLayout(false);
