@@ -3,8 +3,23 @@ using System.Drawing;
 
 namespace SerialDeviceDriver
 {
+    public enum ImageLayout
+    {
+        Stretch,        // strech without maining aspect ratio
+        FitAspectRatio, // stretch to max size, but maintain aspect ratio  
+        Center  // don't resize, just put in the center
+    }
+
     public static class BitmapExtensions
     {
+        /// <summary>
+        /// Resizes the bitmap to a specified width and height, maintains aspect ratio by default
+        /// </summary>
+        /// <param name="original"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="layout"></param>
+        /// <returns></returns>
         public static Bitmap Fit(this Bitmap original, int width, int height, ImageLayout layout = ImageLayout.FitAspectRatio)
         {
             Bitmap modified = null;

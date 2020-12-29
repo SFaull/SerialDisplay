@@ -4,12 +4,6 @@ using System.Drawing;
 
 namespace SerialDeviceDriver
 {
-    public enum ImageLayout
-    {
-        Stretch,        // strech without maining aspect ratio
-        FitAspectRatio, // stretch to max size, but maintain aspect ratio  
-        Center  // don't resize, just put in the center
-    }
     public struct TileOffset
     {
         public int X { get; set; }
