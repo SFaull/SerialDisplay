@@ -42,6 +42,47 @@ namespace SerialDeviceDriver
             this.Tiles = ImageToTiles(image);
         }
 
+        public bool GetTiledFrameDelta(TiledFrame oldFrame, out List<Tile> tiles)
+        {
+            TiledFrame currentFrame = this; // this current instance is the new full frame
+            tiles = null;
+
+            // first throw a hissy fit if the tile sizes don't match
+            if ((oldFrame.TileWidth != currentFrame.TileWidth) || (oldFrame.TileHeight != currentFrame.TileHeight) || (oldFrame.Tiles.Count != currentFrame.Tiles.Count))
+                return false;
+
+            // so we need to compare the two frames and calculate the delta
+            tiles = new List<Tile>();
+
+            for (int i = 0; i < oldFrame.Tiles.Count; i++)
+            {
+                Tile oldTile = oldFrame.Tiles.ElementAt(i);
+                Tile currentTile = currentFrame.Tiles.ElementAt(i);
+
+                if (!oldTile.IsEqualTo(currentTile))
+                    tiles.Add(currentTile);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Convert a 4byte colour into a 2 byte R5G6B5 colour (supported by ST7789 display)
+        /// </summary>
+        /// <param name="clr"></param>
+        /// <returns></returns>
+        private UInt16 ColorToR5G6B5(Color clr)
+        {
+            UInt16 pixel = 0;
+
+            // convert the colour to r5g6b5
+            pixel |= (UInt16)((UInt16)(clr.B & 0b11111000) << 8);
+            pixel |= (UInt16)((UInt16)(clr.G & 0b11111100) << 3);
+            pixel |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
+
+            return pixel;
+        }
+
         private List<Tile> ImageToTiles(Bitmap bitmap)
         {
             List<Tile> tiles = new List<Tile>();
@@ -91,11 +132,7 @@ namespace SerialDeviceDriver
                         for (int x = xOffset; x < xFinish; x++)
                         {
                             Color clr = bitmap.GetPixel(x, y);
-
-                            // convert the colour to r5g6b5
-                            pixArray[index] |= (UInt16)((UInt16)(clr.B & 0b11111000) << 8);
-                            pixArray[index] |= (UInt16)((UInt16)(clr.G & 0b11111100) << 3);
-                            pixArray[index] |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
+                            pixArray[index] = ColorToR5G6B5(clr);
                             index++;
                         }
                     }
@@ -135,30 +172,6 @@ namespace SerialDeviceDriver
             }
 
             return tiles;
-        }
-
-        public bool GetTiledFrameDelta(TiledFrame oldFrame, out List<Tile> tiles)
-        {
-            TiledFrame currentFrame = this; // this current instance is the new full frame
-            tiles = null;
-            
-            // first throw a hissy fit if the tile sizes don't match
-            if ((oldFrame.TileWidth != currentFrame.TileWidth) || (oldFrame.TileHeight != currentFrame.TileHeight) || (oldFrame.Tiles.Count != currentFrame.Tiles.Count))
-                return false;
-
-            // so we need to compare the two frames and calculate the delta
-            tiles = new List<Tile>();
-
-            for (int i = 0; i < oldFrame.Tiles.Count; i++)
-            {
-                Tile oldTile = oldFrame.Tiles.ElementAt(i);
-                Tile currentTile = currentFrame.Tiles.ElementAt(i);
-
-                if (!oldTile.IsEqualTo(currentTile))
-                    tiles.Add(currentTile);
-            }
-
-            return true;
         }
     }
 }
