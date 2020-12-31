@@ -131,5 +131,11 @@ namespace DisplayApp
         }
 
         #endregion
+
+        private void btnSpeedTest_Click(object sender, EventArgs e)
+        {
+            string result = AppManager.Instance.Device.SpeedTest(240*240*2);
+            MessageBox.Show(result + " bytes/s");
+        }
     }
 }

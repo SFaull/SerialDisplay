@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace SerialDeviceDriver
@@ -56,13 +57,27 @@ namespace SerialDeviceDriver
 
             OnFrameTransferStart?.Invoke(bitmaps, EventArgs.Empty);
 
+            var timer = new Stopwatch();
+            timer.Start();
+            long len = 0;
+
             // actually write each of the tiles to the display
             foreach (Tile tile in tiles)
             {
                 OnTileTranferStart?.Invoke(tile, EventArgs.Empty);
                 this.UpdateTile(tile);
+                len += tile.PixelData.Length;
                 OnTileTransferComplete?.Invoke(tile, EventArgs.Empty);
             }
+
+            timer.Stop();
+
+            long millis = timer.ElapsedMilliseconds;
+            double mult = 1000.0 / (double)millis;
+            double rate = (double)len * mult;
+
+
+            Console.WriteLine("{0} bytes/s", (int)rate);
 
             OnFrameTransferComplete?.Invoke(bitmaps, EventArgs.Empty);
         }
@@ -73,12 +88,32 @@ namespace SerialDeviceDriver
             this.WriteImage(bitmap);
         }
 
+        public string SpeedTest(int bytes)
+        {
+            string result = string.Empty;
+
+            byte[] data = new byte[bytes];
+            string cmd = string.Format("TEST {0}", bytes);
+            this.SendExecuteCommand(cmd);
+            this.SendBytes(data);
+            string timeInMsStr = this.ReadLine();
+            if(int.TryParse(timeInMsStr, out int timeInMs))
+            {
+                double mult = 1000.0 / (double)timeInMs;
+                double bytesPerSecond = bytes * mult;
+                result = ((int)bytesPerSecond).ToString();
+            }
+
+            return result;
+        }
+
 
         public void UpdateTile(Tile tile)
         {
             // TODO add error checking
 
-            string cmd = string.Format("DISPLAY {0} {1} {2} {3}", tile.Offset.X, tile.Offset.Y, tile.Width, tile.Height);
+            string cmd = string.Format("TILE {0} {1} {2} {3}", tile.Offset.X, tile.Offset.Y, tile.Width, tile.Height);
+            
             this.SendExecuteCommand(cmd);
             this.SendBytes(tile.PixelData);
         }
@@ -89,7 +124,7 @@ namespace SerialDeviceDriver
         {
             // TODO add error checking
 
-            string cmd = string.Format("DISPLAY {0} {1} {2} {3}", x, y, w, h);
+            string cmd = string.Format("TILE {0} {1} {2} {3}", x, y, w, h);
             this.SendExecuteCommand(cmd);
             this.SendBytes(array);
         }

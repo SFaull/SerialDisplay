@@ -137,11 +137,6 @@ namespace SerialDeviceDriver
                         }
                     }
 
-                    // swap the endianess of entire array
-                    for (int a = 0; a < pixArray.Length; a++)
-                    {
-                        pixArray[a] = pixArray[a].SwitchEndianness();
-                    }
                     // copy into byte array
                     byte[] result = new byte[pixArray.Length * sizeof(UInt16)];
                     Buffer.BlockCopy(pixArray, 0, result, 0, result.Length);

@@ -49,6 +49,12 @@ namespace DisplayApp
             this.MouseY = y;
         }
 
+        public void SetImage(string path)
+        {
+            Bitmap bitmap = new Bitmap(path);
+            this.SetImage(bitmap);
+        }
+
         public void SetImage(Bitmap image)
         {
             this.Frame = image.Fit(240, 240);

@@ -42,8 +42,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gbControls = new System.Windows.Forms.GroupBox();
-            this.gbDiagnostics = new System.Windows.Forms.GroupBox();
             this.btnScreenStream = new System.Windows.Forms.Button();
+            this.gbDiagnostics = new System.Windows.Forms.GroupBox();
+            this.btnSpeedTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
             this.gbMain.SuspendLayout();
@@ -195,20 +196,6 @@
             this.gbControls.TabStop = false;
             this.gbControls.Text = "Controls";
             // 
-            // gbDiagnostics
-            // 
-            this.gbDiagnostics.Controls.Add(this.btnGetBuff);
-            this.gbDiagnostics.Controls.Add(this.btnIDN);
-            this.gbDiagnostics.Controls.Add(this.btnSetRotation);
-            this.gbDiagnostics.Controls.Add(this.btnRead);
-            this.gbDiagnostics.Enabled = false;
-            this.gbDiagnostics.Location = new System.Drawing.Point(20, 376);
-            this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.Size = new System.Drawing.Size(520, 67);
-            this.gbDiagnostics.TabIndex = 12;
-            this.gbDiagnostics.TabStop = false;
-            this.gbDiagnostics.Text = "Diagnostics";
-            // 
             // btnScreenStream
             // 
             this.btnScreenStream.Location = new System.Drawing.Point(168, 19);
@@ -218,6 +205,30 @@
             this.btnScreenStream.Text = "Screen Stream Mode";
             this.btnScreenStream.UseVisualStyleBackColor = true;
             this.btnScreenStream.Click += new System.EventHandler(this.btnScreenStream_Click);
+            // 
+            // gbDiagnostics
+            // 
+            this.gbDiagnostics.Controls.Add(this.btnSpeedTest);
+            this.gbDiagnostics.Controls.Add(this.btnGetBuff);
+            this.gbDiagnostics.Controls.Add(this.btnIDN);
+            this.gbDiagnostics.Controls.Add(this.btnSetRotation);
+            this.gbDiagnostics.Controls.Add(this.btnRead);
+            this.gbDiagnostics.Location = new System.Drawing.Point(20, 376);
+            this.gbDiagnostics.Name = "gbDiagnostics";
+            this.gbDiagnostics.Size = new System.Drawing.Size(520, 67);
+            this.gbDiagnostics.TabIndex = 12;
+            this.gbDiagnostics.TabStop = false;
+            this.gbDiagnostics.Text = "Diagnostics";
+            // 
+            // btnSpeedTest
+            // 
+            this.btnSpeedTest.Location = new System.Drawing.Point(341, 29);
+            this.btnSpeedTest.Name = "btnSpeedTest";
+            this.btnSpeedTest.Size = new System.Drawing.Size(75, 23);
+            this.btnSpeedTest.TabIndex = 11;
+            this.btnSpeedTest.Text = "Speed Test";
+            this.btnSpeedTest.UseVisualStyleBackColor = true;
+            this.btnSpeedTest.Click += new System.EventHandler(this.btnSpeedTest_Click);
             // 
             // MainForm
             // 
@@ -256,6 +267,7 @@
         private System.Windows.Forms.GroupBox gbControls;
         private System.Windows.Forms.GroupBox gbDiagnostics;
         private System.Windows.Forms.Button btnScreenStream;
+        private System.Windows.Forms.Button btnSpeedTest;
     }
 }
 
