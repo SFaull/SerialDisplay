@@ -12,10 +12,12 @@
 #define MAX_DISPLAY_BLOCK_SIZE     110
 #define MAX_DISPLAY_BLOCK_PIXELS  (MAX_DISPLAY_BLOCK_SIZE * MAX_DISPLAY_BLOCK_SIZE)
 
+#define SERIAL_READ_BLOCK_SIZE      255
+
 typedef union
 {
 	char bytes[MAX_DISPLAY_BLOCK_PIXELS*2];
-	uint16_t display_buffer[MAX_DISPLAY_BLOCK_PIXELS] = {0};
+	uint16_t pixels[MAX_DISPLAY_BLOCK_PIXELS] = {0};
 } display_store_t;
 
 display_store_t displayStore;
@@ -105,60 +107,33 @@ static void display_block() {
         //SerialUSB.println("Too large");
         return;
     }
-#if 0
-    if(((x + w) >= DISPLAY_WIDTH) || ((y+h) >= DISPLAY_WIDTH))
-    {
-        //SerialUSB.println("Too large");
-        //return;
-    }
-#endif
 
-    long pixelsRemaining = w * h * sizeof(uint16_t);
-
-    // workout where in the display buffer we are starting based on the provided offset
-    //long offset = (y * DISPLAY_WIDTH) + x;
-    // create a pointer to that position in the buffer
+    long bytesToRead = w * h * sizeof(uint16_t);
     char * ptr = displayStore.bytes;
 
     // now lets read the raw data into the buffer
-    while(pixelsRemaining > 0)
+    while(bytesToRead > 0)
     {
-        int step = 255;
-        if(pixelsRemaining < 255)
-            step = pixelsRemaining;
+        int blockSize = SERIAL_READ_BLOCK_SIZE;
+        if(bytesToRead < SERIAL_READ_BLOCK_SIZE)
+            blockSize = bytesToRead;
 
         while(!SerialUSB.available()) {};   // wait until bytes available
-        uint8_t bytesReceived = SerialUSB.readBytes(ptr, step);
+        uint8_t bytesReceived = SerialUSB.readBytes(ptr, blockSize);
 
-        if(bytesReceived != step)
+        if(bytesReceived != blockSize)
         {
             SerialUSB.println("Error receiving image");
             return;
         }
-        // store this in the uint16_t buffer
-        //*ptr = ( (pixel[0] * 0xFF) | (pixel[1] >> 8) );
-        
-        //*ptr = ((pixel[0]<<8)+pixel[1]);
 
         // increment the buffer and decrement the pixels remaing counter
-        ptr+=step;
-        pixelsRemaining-=step;
+        ptr+=blockSize;
+        bytesToRead-=blockSize;
     }
 
     //now lets actually display the image
-    tft.pushImage(x,y,w,h,displayStore.display_buffer);
-    
-
-#if 0
-    for(long i = 0; i < (w * h); i++)
-    {
-        SerialUSB.print(display_buffer[i], HEX);
-        if((i % DISPLAY_BLOCK_SIZE) == 59)
-            SerialUSB.println();
-        else
-            SerialUSB.print(",");
-    }
-#endif 
+    tft.pushImage(x,y,w,h,displayStore.pixels);
 }
 
 static void speed_test() {
@@ -172,51 +147,28 @@ static void speed_test() {
     }
 
     // convert ASCII parameters to integers
-    long len = atol(arg);
-
+    long bytesToRead = atol(arg);
     long timeStart = millis();
-
-#if 0
-    // now lets read the raw data into the buffer
-    while(len > 0)
-    {
-        // read two bytes at a time
-        char pixel[2];
-        //while(!SerialUSB.available()) {};   // wait until bytes available
-        uint8_t bytesReceived = SerialUSB.readBytes(pixel, 10);
-
-        if(bytesReceived != 10)
-        {
-            SerialUSB.println("Error receiving image");
-            return;
-        }
-
-        //uint16_t pix = ((pixel[0]<<8)+pixel[1]);
-        len-=10;
-    }    
-#endif
-
     char * ptr = displayStore.bytes;
-    while(len > 0)
+    while(bytesToRead > 0)
     {
-        int step = 1024;
-        if(len < 1024)
+        int blockSize = SERIAL_READ_BLOCK_SIZE;
+        if(bytesToRead < SERIAL_READ_BLOCK_SIZE)
         {
-            step = len;
+            blockSize = bytesToRead;
         }
 
         while(!SerialUSB.available()) {};   // wait until bytes available
-        uint16_t bytesReceived = SerialUSB.readBytes(ptr, step);
+        uint16_t bytesReceived = SerialUSB.readBytes(ptr, blockSize);
 
-        if(bytesReceived != step)
+        if(bytesReceived != blockSize)
         {
             SerialUSB.println("Error receiving image");
             return;
         }
-
-        //uint16_t pix = ((pixel[0]<<8)+pixel[1]);
-        len -= step;
-        //ptr += step;
+        
+        bytesToRead -= blockSize;
+        //ptr += blockSize;
     }    
 
     long timeTaken = millis() - timeStart;
@@ -241,7 +193,7 @@ static void print_buffer()
 
     int offset = atoi(arg[0]);
     int len = atoi(arg[1]);
-    uint16_t * ptr = &displayStore.display_buffer[offset];
+    uint16_t * ptr = &displayStore.pixels[offset];
 
     while(len > 0)
     {
