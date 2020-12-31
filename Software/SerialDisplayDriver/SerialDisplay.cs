@@ -35,7 +35,7 @@ namespace SerialDeviceDriver
 
         }
 
-        public void WriteImage(Bitmap bitmap)
+        public void WriteImage(Bitmap bitmap, bool useTiles = true)
         {
             this.LastFrame = this.CurrentFrame;
 
@@ -61,13 +61,21 @@ namespace SerialDeviceDriver
             timer.Start();
             long len = 0;
 
-            // actually write each of the tiles to the display
-            foreach (Tile tile in tiles)
+            if (useTiles)
             {
-                OnTileTranferStart?.Invoke(tile, EventArgs.Empty);
-                this.UpdateTile(tile);
-                len += tile.PixelData.Length;
-                OnTileTransferComplete?.Invoke(tile, EventArgs.Empty);
+                // actually write each of the tiles to the display
+                foreach (Tile tile in tiles)
+                {
+                    OnTileTranferStart?.Invoke(tile, EventArgs.Empty);
+                    this.UpdateTile(tile);
+                    len += tile.PixelData.Length;
+                    OnTileTransferComplete?.Invoke(tile, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                len += CurrentFrame.PixelData.Length;
+                this.UpdateFrame(this.CurrentFrame);
             }
 
             timer.Stop();
@@ -107,6 +115,12 @@ namespace SerialDeviceDriver
             return result;
         }
 
+
+        private void UpdateFrame(TiledFrame frame)
+        {
+            this.SendExecuteCommand("FRAME");
+            this.SendBytes(frame.PixelData);
+        }
 
         public void UpdateTile(Tile tile)
         {

@@ -20,6 +20,8 @@ namespace SerialDeviceDriver
 
         public List<Tile> Tiles { get; private set; }
 
+        public byte[] PixelData;
+
         public TiledFrame(int width, int height, int tileWidth, int tileHeight)
         {
             this.Width = width;
@@ -39,6 +41,7 @@ namespace SerialDeviceDriver
         public void LoadImage(Bitmap image)
         {
             this.Image = image;
+            this.PixelData = ImageToBytes(image);
             this.Tiles = ImageToTiles(image);
         }
 
@@ -81,6 +84,28 @@ namespace SerialDeviceDriver
             pixel |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
 
             return pixel;
+        }
+
+        private byte[] ImageToBytes (Bitmap bitmap)
+        {
+            UInt16[] pixArray = new UInt16[this.Height * this.Width];
+            byte[] bytes = new byte[pixArray.Length * sizeof(UInt16)];
+
+            int index = 0;
+
+            for (int y = 0; y < this.Height; y++)
+            {
+                for (int x = 0; x < this.Width; x++)
+                {
+                    Color clr = bitmap.GetPixel(x, y);
+                    pixArray[index] = ColorToR5G6B5(clr);
+                    index++;
+                }
+            }
+
+            Buffer.BlockCopy(pixArray, 0, bytes, 0, bytes.Length);
+
+            return bytes;
         }
 
         private List<Tile> ImageToTiles(Bitmap bitmap)
