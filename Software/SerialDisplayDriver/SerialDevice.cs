@@ -38,7 +38,7 @@ namespace SerialDeviceDriver
                     port.Handshake = Handshake.None;
                     port.DtrEnable = true;
                     port.ReadTimeout = 5000;
-                    port.WriteTimeout = 5000;
+                    port.WriteTimeout = 500;
                     port.Open();
 
                     success = this.IsConnected();
