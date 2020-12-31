@@ -29,6 +29,7 @@ TFT_eSPI tft = TFT_eSPI();  // Invoke custom library
 static void idn(void);
 static void display_set_rotation(void);
 static void display_block(void);
+static void display_frame(void);
 static void speed_test(void);
 static void print_buffer(void);
 static void unrecognized(const char *command);
@@ -42,6 +43,7 @@ void Commands::init()
 
   sCmd.addCommand("*IDN?", idn);        // Echos the string argument back
   sCmd.addCommand("TILE", display_block);        // Echos the string argument back
+  sCmd.addCommand("FRAME", display_frame);        // Echos the string argument back
   sCmd.addCommand("TEST", speed_test);
   sCmd.addCommand("BUFFER?", print_buffer);        // Echos the string argument back
   sCmd.addCommand("ROTATION", display_set_rotation);       
@@ -135,6 +137,33 @@ static void display_block() {
     //now lets actually display the image
     tft.pushImage(x,y,w,h,displayStore.pixels);
 }
+
+static void display_frame(){ 
+
+    long bytesToRead = DISPLAY_PIXELS * sizeof(uint16_t);
+    int blockSize = DISPLAY_WIDTH * sizeof(uint16_t);
+    int row = 0;
+    char * ptr = displayStore.bytes;
+
+    // now lets read the raw data into the buffer
+    while(bytesToRead > 0)
+    {
+        while(!SerialUSB.available()) {};   // wait until bytes available
+        uint8_t bytesReceived = SerialUSB.readBytes(ptr, blockSize);
+#if 0
+        if(bytesReceived != blockSize)
+        {
+            SerialUSB.println("Error receiving image");
+            return;
+        }
+#endif
+        //now lets actually display the image
+        tft.pushImage(0,row,DISPLAY_WIDTH,1,displayStore.pixels);
+        row++;
+        bytesToRead-=blockSize;
+    }
+}
+
 
 static void speed_test() {
     char *arg; // expect 1 arguments
