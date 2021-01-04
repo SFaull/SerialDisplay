@@ -30,7 +30,8 @@ static void idn(void);
 static void display_set_rotation(void);
 static void display_block(void);
 static void display_frame(void);
-static void speed_test(void);
+static void display_speed_test(void);
+static void usb_speed_test(void);
 static void print_buffer(void);
 static void unrecognized(const char *command);
 
@@ -44,7 +45,8 @@ void Commands::init()
   sCmd.addCommand("*IDN?", idn);        // Echos the string argument back
   sCmd.addCommand("TILE", display_block);        // Echos the string argument back
   sCmd.addCommand("FRAME", display_frame);        // Echos the string argument back
-  sCmd.addCommand("TEST", speed_test);
+  sCmd.addCommand("TEST:USB", usb_speed_test);
+  sCmd.addCommand("TEST:DISP", display_speed_test);
   sCmd.addCommand("BUFFER?", print_buffer);        // Echos the string argument back
   sCmd.addCommand("ROTATION", display_set_rotation);       
   sCmd.setDefaultHandler(unrecognized);      // Handler for command that isn't matched  (says "What?")
@@ -165,7 +167,7 @@ static void display_frame(){
 }
 
 
-static void speed_test() {
+static void usb_speed_test() {
     char *arg; // expect 1 arguments
 
     arg = sCmd.next();  
@@ -199,6 +201,24 @@ static void speed_test() {
         bytesToRead -= blockSize;
         //ptr += blockSize;
     }    
+
+    long timeTaken = millis() - timeStart;
+    SerialUSB.println(timeTaken);
+}
+
+static void display_speed_test() 
+{
+    long timeStart = millis();
+
+    int row = 0;
+    // now lets read the raw data into the buffer
+    while(row < DISPLAY_HEIGHT)
+    {
+        //now lets actually display the image
+        tft.pushImage(0,row,DISPLAY_WIDTH,1,displayStore.pixels);
+        row++;
+    }
+
 
     long timeTaken = millis() - timeStart;
     SerialUSB.println(timeTaken);

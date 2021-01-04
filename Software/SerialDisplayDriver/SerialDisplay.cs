@@ -35,7 +35,7 @@ namespace SerialDeviceDriver
 
         }
 
-        public void WriteImage(Bitmap bitmap, bool useTiles = true)
+        public long WriteImage(Bitmap bitmap, bool useTiles = true)
         {
             this.LastFrame = this.CurrentFrame;
 
@@ -81,13 +81,13 @@ namespace SerialDeviceDriver
             timer.Stop();
 
             long millis = timer.ElapsedMilliseconds;
-            double mult = 1000.0 / (double)millis;
-            double rate = (double)len * mult;
-
-
-            Console.WriteLine("{0} bytes/s", (int)rate);
+            //double mult = 1000.0 / (double)millis;
+            //double rate = (double)len * mult;
+            //Console.WriteLine("{0} bytes/s", (int)rate);
 
             OnFrameTransferComplete?.Invoke(bitmaps, EventArgs.Empty);
+
+            return millis;
         }
 
         public void WriteImage(string path)
@@ -96,12 +96,12 @@ namespace SerialDeviceDriver
             this.WriteImage(bitmap);
         }
 
-        public string SpeedTest(int bytes)
+        public string USBSpeedTest(int bytes)
         {
             string result = string.Empty;
 
             byte[] data = new byte[bytes];
-            string cmd = string.Format("TEST {0}", bytes);
+            string cmd = string.Format("TEST:USB {0}", bytes);
             this.SendExecuteCommand(cmd);
             this.SendBytes(data);
             string timeInMsStr = this.ReadLine();
@@ -114,6 +114,35 @@ namespace SerialDeviceDriver
 
             return result;
         }
+
+        public string DisplaySpeedTest()
+        {
+            string result = string.Empty;
+
+            string timeInMsStr = this.SendRequestCommand("TEST:DISP");
+            if (int.TryParse(timeInMsStr, out int timeInMs))
+            {
+                double fps = 1000.0 / (double)timeInMs;
+                result = (fps).ToString();
+            }
+
+            return result;
+        }
+
+        public string SingleFrameSpeedTest()
+        {
+            string result = string.Empty;
+            this.CurrentFrame = null;
+
+            var b = new Bitmap(240, 240);
+            b.SetPixel(0, 0, Color.White);
+
+            long timeInMs = this.WriteImage(b);
+            double fps = 1000.0 / (double)timeInMs;
+            result = (fps).ToString();
+            return result;
+        }
+
 
 
         private void UpdateFrame(TiledFrame frame)

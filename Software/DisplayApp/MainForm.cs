@@ -132,10 +132,22 @@ namespace DisplayApp
 
         #endregion
 
+        private void btnUSBSpeedTest_Click(object sender, EventArgs e)
+        {
+            string result = AppManager.Instance.Device.USBSpeedTest(240*240*2);
+            MessageBox.Show(result + " bytes/s");
+        }
+
+        private void btnDisplaySpeedTest_Click(object sender, EventArgs e)
+        {
+            string result = AppManager.Instance.Device.DisplaySpeedTest();
+            MessageBox.Show(result + " fps");
+        }
+
         private void btnSpeedTest_Click(object sender, EventArgs e)
         {
-            string result = AppManager.Instance.Device.SpeedTest(240*240*2);
-            MessageBox.Show(result + " bytes/s");
+            string result = AppManager.Instance.Device.SingleFrameSpeedTest();
+            MessageBox.Show(result + " fps");
         }
     }
 }

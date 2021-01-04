@@ -44,6 +44,8 @@
             this.gbControls = new System.Windows.Forms.GroupBox();
             this.btnScreenStream = new System.Windows.Forms.Button();
             this.gbDiagnostics = new System.Windows.Forms.GroupBox();
+            this.btnDisplaySpeedTest = new System.Windows.Forms.Button();
+            this.btnUSBSpeedTest = new System.Windows.Forms.Button();
             this.btnSpeedTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
@@ -148,7 +150,7 @@
             this.gbMain.Controls.Add(this.gbDiagnostics);
             this.gbMain.Location = new System.Drawing.Point(12, 41);
             this.gbMain.Name = "gbMain";
-            this.gbMain.Size = new System.Drawing.Size(557, 461);
+            this.gbMain.Size = new System.Drawing.Size(557, 501);
             this.gbMain.TabIndex = 12;
             this.gbMain.TabStop = false;
             this.gbMain.Visible = false;
@@ -209,23 +211,45 @@
             // gbDiagnostics
             // 
             this.gbDiagnostics.Controls.Add(this.btnSpeedTest);
+            this.gbDiagnostics.Controls.Add(this.btnDisplaySpeedTest);
+            this.gbDiagnostics.Controls.Add(this.btnUSBSpeedTest);
             this.gbDiagnostics.Controls.Add(this.btnGetBuff);
             this.gbDiagnostics.Controls.Add(this.btnIDN);
             this.gbDiagnostics.Controls.Add(this.btnSetRotation);
             this.gbDiagnostics.Controls.Add(this.btnRead);
             this.gbDiagnostics.Location = new System.Drawing.Point(20, 376);
             this.gbDiagnostics.Name = "gbDiagnostics";
-            this.gbDiagnostics.Size = new System.Drawing.Size(520, 67);
+            this.gbDiagnostics.Size = new System.Drawing.Size(520, 119);
             this.gbDiagnostics.TabIndex = 12;
             this.gbDiagnostics.TabStop = false;
             this.gbDiagnostics.Text = "Diagnostics";
             // 
+            // btnDisplaySpeedTest
+            // 
+            this.btnDisplaySpeedTest.Location = new System.Drawing.Point(121, 58);
+            this.btnDisplaySpeedTest.Name = "btnDisplaySpeedTest";
+            this.btnDisplaySpeedTest.Size = new System.Drawing.Size(111, 23);
+            this.btnDisplaySpeedTest.TabIndex = 12;
+            this.btnDisplaySpeedTest.Text = "Display Speed Test";
+            this.btnDisplaySpeedTest.UseVisualStyleBackColor = true;
+            this.btnDisplaySpeedTest.Click += new System.EventHandler(this.btnDisplaySpeedTest_Click);
+            // 
+            // btnUSBSpeedTest
+            // 
+            this.btnUSBSpeedTest.Location = new System.Drawing.Point(17, 58);
+            this.btnUSBSpeedTest.Name = "btnUSBSpeedTest";
+            this.btnUSBSpeedTest.Size = new System.Drawing.Size(98, 23);
+            this.btnUSBSpeedTest.TabIndex = 11;
+            this.btnUSBSpeedTest.Text = "USB Speed Test";
+            this.btnUSBSpeedTest.UseVisualStyleBackColor = true;
+            this.btnUSBSpeedTest.Click += new System.EventHandler(this.btnUSBSpeedTest_Click);
+            // 
             // btnSpeedTest
             // 
-            this.btnSpeedTest.Location = new System.Drawing.Point(341, 29);
+            this.btnSpeedTest.Location = new System.Drawing.Point(238, 58);
             this.btnSpeedTest.Name = "btnSpeedTest";
-            this.btnSpeedTest.Size = new System.Drawing.Size(75, 23);
-            this.btnSpeedTest.TabIndex = 11;
+            this.btnSpeedTest.Size = new System.Drawing.Size(97, 23);
+            this.btnSpeedTest.TabIndex = 13;
             this.btnSpeedTest.Text = "Speed Test";
             this.btnSpeedTest.UseVisualStyleBackColor = true;
             this.btnSpeedTest.Click += new System.EventHandler(this.btnSpeedTest_Click);
@@ -234,7 +258,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(579, 510);
+            this.ClientSize = new System.Drawing.Size(579, 554);
             this.Controls.Add(this.gbMain);
             this.Controls.Add(this.btnConnect);
             this.Name = "MainForm";
@@ -267,6 +291,8 @@
         private System.Windows.Forms.GroupBox gbControls;
         private System.Windows.Forms.GroupBox gbDiagnostics;
         private System.Windows.Forms.Button btnScreenStream;
+        private System.Windows.Forms.Button btnUSBSpeedTest;
+        private System.Windows.Forms.Button btnDisplaySpeedTest;
         private System.Windows.Forms.Button btnSpeedTest;
     }
 }
