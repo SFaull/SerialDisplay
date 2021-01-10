@@ -16,27 +16,17 @@ namespace DisplayApp
 {
     public partial class MainForm : Form
     {
+        #region Constructor
+
         public MainForm()
         {
             InitializeComponent();
-
 
             AppManager.Instance.OnDisplayUpdateComplete += Display_UpdateComplete;
             AppManager.Instance.OnDisplayUpdateStart += Display_UpdateStart;
 
         }
-
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            bool success = AppManager.Instance.ConnectToDisplay();  // warning: this function blocks
-            if (!success)
-            {
-                MessageBox.Show("Failed");
-                return;
-            }
-            btnConnect.Enabled = false;
-            gbMain.Visible = true;
-        }
+        #endregion
 
         #region Event Handlers
 
@@ -59,9 +49,19 @@ namespace DisplayApp
 
         #endregion
 
-
-
         #region Controls
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            bool success = AppManager.Instance.ConnectToDisplay();  // warning: this function blocks
+            if (!success)
+            {
+                MessageBox.Show("Failed");
+                return;
+            }
+            btnConnect.Enabled = false;
+            gbMain.Visible = true;
+        }
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
@@ -130,12 +130,12 @@ namespace DisplayApp
             MessageBox.Show(response);
         }
 
-        #endregion
-
         private void btnUSBSpeedTest_Click(object sender, EventArgs e)
         {
-            string result = AppManager.Instance.Device.USBSpeedTest(240*240*2);
-            MessageBox.Show(result + " bytes/s");
+            int bytes = 240 * 240 * 2;
+            string result = AppManager.Instance.Device.USBSpeedTest(bytes);
+            float.TryParse(result, out float bps);
+            MessageBox.Show(result + " bytes/s\n" + bps / (float)bytes + " fps");
         }
 
         private void btnDisplaySpeedTest_Click(object sender, EventArgs e)
@@ -149,5 +149,7 @@ namespace DisplayApp
             string result = AppManager.Instance.Device.SingleFrameSpeedTest();
             MessageBox.Show(result + " fps");
         }
+
+        #endregion
     }
 }
