@@ -7,6 +7,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PluginInterface;
 using SerialDeviceDriver;
 
 namespace DisplayApp
@@ -21,6 +22,9 @@ namespace DisplayApp
 
     public class DisplayManager
     {
+        private bool PluginChanged;
+        private IPlugin Plugin;
+
         private SerialDisplay Display;
         private Bitmap Frame;
         public DisplayMode Mode { get; private set; }
@@ -34,7 +38,7 @@ namespace DisplayApp
         {
             this.Display = display;
             this.FrameReady = false;
-            this.Start();
+            //this.Start();
         }
 
 
@@ -63,19 +67,34 @@ namespace DisplayApp
         }
 
 
-        private void Start()
+        public void StartNewPlugin(IPlugin plugin)
         {
-            Task t = Task.Run(() => { StateMachine(); })
+            this.Plugin = plugin;
+            this.PluginChanged = true;
+
+            plugin.Setup();
+
+            Task tState = Task.Run(() => { StateMachine(); })
                 .ContinueWith((i) => { Console.WriteLine("State Machine exited"); }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            Task tMain = Task.Run(() => { MainLoop(); })
+                .ContinueWith((i) => { Console.WriteLine("Plugin Mainloop exited"); }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        public void StopPlugin()
+        {
+            this.PluginChanged = true;
         }
 
         private void StateMachine()
         {
-            while (true)
+            this.PluginChanged = false;
+
+            while (!this.PluginChanged)
             {
-                if (this.FrameReady)
+                if (Plugin.IsFrameReady())
                 {
-                    this.FrameReady = false; // reset the flag
+                    this.Frame = Plugin.NextFrame();
                     OnRefreshStart?.Invoke(this.Frame, EventArgs.Empty);
                     this.Display.WriteImage(this.Frame);
                     OnRefreshComplete?.Invoke(this, EventArgs.Empty);
@@ -98,6 +117,15 @@ namespace DisplayApp
                             break;
                     }
                 }
+            }
+        }
+
+        private void MainLoop()
+        {
+            bool active = true;
+            while(active && !this.PluginChanged)
+            {
+                active = Plugin.MainLoop();
             }
         }
 

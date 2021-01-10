@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using PluginInterface;
 using SerialDeviceDriver;
 
 namespace DisplayApp
@@ -25,7 +26,37 @@ namespace DisplayApp
             AppManager.Instance.OnDisplayUpdateComplete += Display_UpdateComplete;
             AppManager.Instance.OnDisplayUpdateStart += Display_UpdateStart;
 
+            foreach (IPlugin plugin in AppManager.Instance.Plugins)
+            {
+                Button btn = new Button();
+
+                btn.AutoSize = true;
+                btn.Text = plugin.PluginName;
+                btn.Tag = plugin;
+                btn.Click += btnPlugin_Click;
+                flpPlugins.Controls.Add(btn);
+            }
         }
+
+        private void btnPlugin_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            IPlugin plugin = btn.Tag as IPlugin;
+
+            AppManager.Instance.StartPluginStateMachine(plugin);
+            plugin.GetFormInstance().FormClosed += PluginForm_Closed;
+            plugin.GetFormInstance().ShowDialog();
+            
+
+
+        }
+
+        private void PluginForm_Closed(object sender, FormClosedEventArgs e)
+        {
+            AppManager.Instance.StopPluginStateMachine();
+        }
+
+
         #endregion
 
         #region Event Handlers
@@ -63,30 +94,6 @@ namespace DisplayApp
             gbMain.Visible = true;
         }
 
-        private void btnLoadImage_Click(object sender, EventArgs e)
-        {
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png, *.gif) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png; *.gif";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //Get the path of specified file
-                    string filePath = openFileDialog.FileName;
-                    if (File.Exists(filePath))
-                    {
-                        // location of you image
-                        Bitmap img = new Bitmap(filePath);
-                        AppManager.Instance.Display.SetMode(DisplayMode.StaticImage);
-                        AppManager.Instance.Display.SetImage(img);
-
-                    }
-                }
-            }
-        }
-
         private void btnScreenStream_Click(object sender, EventArgs e)
         {
             AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
@@ -98,9 +105,9 @@ namespace DisplayApp
             AppManager.Instance.Display.SetMode(DisplayMode.Icon);
         }
 
-        #endregion
+#endregion
 
-        #region Diagnostics
+#region Diagnostics
 
         int rotation = 0;
         private void btnSetRotation_Click(object sender, EventArgs e)
@@ -150,6 +157,6 @@ namespace DisplayApp
             MessageBox.Show(result + " fps");
         }
 
-        #endregion
+#endregion
     }
 }

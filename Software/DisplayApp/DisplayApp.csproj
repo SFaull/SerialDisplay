@@ -100,6 +100,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PluginInterface\PluginInterface.csproj">
+      <Project>{ACEBA049-11B6-4320-B3CF-8A40F2866FE0}</Project>
+      <Name>PluginInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SerialDisplayDriver\SerialDisplayDriver.csproj">
       <Project>{ac0c3ab5-578b-4ee3-890c-6f6d338757bc}</Project>
       <Name>SerialDisplayDriver</Name>

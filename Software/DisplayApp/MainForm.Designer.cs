@@ -32,9 +32,7 @@
             this.btnRead = new System.Windows.Forms.Button();
             this.btnIDN = new System.Windows.Forms.Button();
             this.btnGetBuff = new System.Windows.Forms.Button();
-            this.btnLoadImage = new System.Windows.Forms.Button();
             this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.btnIconMode = new System.Windows.Forms.Button();
             this.btnSetRotation = new System.Windows.Forms.Button();
             this.pbTileView = new System.Windows.Forms.PictureBox();
             this.gbMain = new System.Windows.Forms.GroupBox();
@@ -42,11 +40,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gbControls = new System.Windows.Forms.GroupBox();
-            this.btnScreenStream = new System.Windows.Forms.Button();
             this.gbDiagnostics = new System.Windows.Forms.GroupBox();
+            this.btnSpeedTest = new System.Windows.Forms.Button();
             this.btnDisplaySpeedTest = new System.Windows.Forms.Button();
             this.btnUSBSpeedTest = new System.Windows.Forms.Button();
-            this.btnSpeedTest = new System.Windows.Forms.Button();
+            this.flpPlugins = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
             this.gbMain.SuspendLayout();
@@ -95,16 +93,6 @@
             this.btnGetBuff.UseVisualStyleBackColor = true;
             this.btnGetBuff.Click += new System.EventHandler(this.btnGetBuff_Click);
             // 
-            // btnLoadImage
-            // 
-            this.btnLoadImage.Location = new System.Drawing.Point(6, 19);
-            this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(75, 23);
-            this.btnLoadImage.TabIndex = 5;
-            this.btnLoadImage.Text = "Load Image";
-            this.btnLoadImage.UseVisualStyleBackColor = true;
-            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
-            // 
             // pbPreview
             // 
             this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -113,16 +101,6 @@
             this.pbPreview.Size = new System.Drawing.Size(240, 240);
             this.pbPreview.TabIndex = 6;
             this.pbPreview.TabStop = false;
-            // 
-            // btnIconMode
-            // 
-            this.btnIconMode.Location = new System.Drawing.Point(87, 19);
-            this.btnIconMode.Name = "btnIconMode";
-            this.btnIconMode.Size = new System.Drawing.Size(75, 23);
-            this.btnIconMode.TabIndex = 9;
-            this.btnIconMode.Text = "Icon Mode";
-            this.btnIconMode.UseVisualStyleBackColor = true;
-            this.btnIconMode.Click += new System.EventHandler(this.btnIconMode_Click);
             // 
             // btnSetRotation
             // 
@@ -188,25 +166,13 @@
             // 
             // gbControls
             // 
-            this.gbControls.Controls.Add(this.btnScreenStream);
-            this.gbControls.Controls.Add(this.btnLoadImage);
-            this.gbControls.Controls.Add(this.btnIconMode);
+            this.gbControls.Controls.Add(this.flpPlugins);
             this.gbControls.Location = new System.Drawing.Point(20, 19);
             this.gbControls.Name = "gbControls";
             this.gbControls.Size = new System.Drawing.Size(520, 53);
             this.gbControls.TabIndex = 13;
             this.gbControls.TabStop = false;
             this.gbControls.Text = "Controls";
-            // 
-            // btnScreenStream
-            // 
-            this.btnScreenStream.Location = new System.Drawing.Point(168, 19);
-            this.btnScreenStream.Name = "btnScreenStream";
-            this.btnScreenStream.Size = new System.Drawing.Size(122, 23);
-            this.btnScreenStream.TabIndex = 10;
-            this.btnScreenStream.Text = "Screen Stream Mode";
-            this.btnScreenStream.UseVisualStyleBackColor = true;
-            this.btnScreenStream.Click += new System.EventHandler(this.btnScreenStream_Click);
             // 
             // gbDiagnostics
             // 
@@ -223,6 +189,16 @@
             this.gbDiagnostics.TabIndex = 12;
             this.gbDiagnostics.TabStop = false;
             this.gbDiagnostics.Text = "Diagnostics";
+            // 
+            // btnSpeedTest
+            // 
+            this.btnSpeedTest.Location = new System.Drawing.Point(238, 58);
+            this.btnSpeedTest.Name = "btnSpeedTest";
+            this.btnSpeedTest.Size = new System.Drawing.Size(97, 23);
+            this.btnSpeedTest.TabIndex = 13;
+            this.btnSpeedTest.Text = "Speed Test";
+            this.btnSpeedTest.UseVisualStyleBackColor = true;
+            this.btnSpeedTest.Click += new System.EventHandler(this.btnSpeedTest_Click);
             // 
             // btnDisplaySpeedTest
             // 
@@ -244,15 +220,13 @@
             this.btnUSBSpeedTest.UseVisualStyleBackColor = true;
             this.btnUSBSpeedTest.Click += new System.EventHandler(this.btnUSBSpeedTest_Click);
             // 
-            // btnSpeedTest
+            // flpPlugins
             // 
-            this.btnSpeedTest.Location = new System.Drawing.Point(238, 58);
-            this.btnSpeedTest.Name = "btnSpeedTest";
-            this.btnSpeedTest.Size = new System.Drawing.Size(97, 23);
-            this.btnSpeedTest.TabIndex = 13;
-            this.btnSpeedTest.Text = "Speed Test";
-            this.btnSpeedTest.UseVisualStyleBackColor = true;
-            this.btnSpeedTest.Click += new System.EventHandler(this.btnSpeedTest_Click);
+            this.flpPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpPlugins.Location = new System.Drawing.Point(3, 16);
+            this.flpPlugins.Name = "flpPlugins";
+            this.flpPlugins.Size = new System.Drawing.Size(514, 34);
+            this.flpPlugins.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -279,9 +253,7 @@
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.Button btnIDN;
         private System.Windows.Forms.Button btnGetBuff;
-        private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.Button btnIconMode;
         private System.Windows.Forms.Button btnSetRotation;
         private System.Windows.Forms.PictureBox pbTileView;
         private System.Windows.Forms.GroupBox gbMain;
@@ -290,10 +262,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox gbControls;
         private System.Windows.Forms.GroupBox gbDiagnostics;
-        private System.Windows.Forms.Button btnScreenStream;
         private System.Windows.Forms.Button btnUSBSpeedTest;
         private System.Windows.Forms.Button btnDisplaySpeedTest;
         private System.Windows.Forms.Button btnSpeedTest;
+        private System.Windows.Forms.FlowLayoutPanel flpPlugins;
     }
 }
 

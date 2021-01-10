@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using PluginInterface;
 using SerialDeviceDriver;
 
 namespace DisplayApp
@@ -36,6 +38,8 @@ namespace DisplayApp
         public SerialDisplay Device;
         public DisplayManager Display;
 
+        public List<IPlugin> Plugins;
+
         public event EventHandler OnDisplayUpdateStart;
         public event EventHandler OnDisplayUpdateComplete;
 
@@ -47,11 +51,60 @@ namespace DisplayApp
         public void Initialise()
         {
             // TODO initialisation here
+            this.Plugins = this.GetPlugins();
         }
 
         public void DeInitialise()
         {
             // TODO deinitialisation here
+        }
+
+
+        private List<IPlugin> GetPlugins()
+        {
+            List<Type> types = new List<Type>();
+            List<IPlugin> plugins = new List<IPlugin>();
+
+            string[] assemblyPaths = System.IO.Directory.GetFiles(@"E:\Sam\Git\XiaoDisplay\Software\Plugins", "*.dll", System.IO.SearchOption.AllDirectories);
+            foreach (string assemblyPath in assemblyPaths)
+            {
+                Assembly assembly = null;
+                assembly = Assembly.LoadFrom(assemblyPath);
+
+                // Go through all the types in it
+                foreach (Type t in assembly.GetExportedTypes())
+                {
+                    if (typeof(IPlugin).IsAssignableFrom(t))
+                    {
+                        if (t.FullName != "PluginInterface.IPlugin")
+                            types.Add(t);
+
+                        Console.WriteLine(t.FullName);
+                    }
+                }
+            }
+
+            foreach (var type in types)
+            {
+                Assembly assem = type.Assembly;
+                IPlugin plugin = assem.CreateInstance(type.FullName) as IPlugin;
+                plugins.Add(plugin);
+                //Form form = plugin.GetFormInstance();
+                //MessageBox.Show(plugin.PluginName);
+                //form.ShowDialog();
+            }
+
+            return plugins;
+        }
+
+        internal void StopPluginStateMachine()
+        {
+            Display.StopPlugin();
+        }
+
+        public void StartPluginStateMachine(IPlugin plugin)
+        {
+            Display.StartNewPlugin(plugin);
         }
 
         public bool ConnectToDisplay()
@@ -125,12 +178,12 @@ namespace DisplayApp
 
         private void Display_OnFrameTransferStart(object sender, EventArgs e)
         {
-            OnDisplayUpdateStart?.BeginInvoke(sender, EventArgs.Empty, null, null);
+            OnDisplayUpdateStart?.Invoke(sender, EventArgs.Empty);
         }
 
         private void Display_OnFrameTransferComplete(object sender, EventArgs e)
         {
-            OnDisplayUpdateComplete?.BeginInvoke(sender, EventArgs.Empty, null, null);
+            OnDisplayUpdateComplete?.Invoke(sender, EventArgs.Empty);
         }
 
         #endregion
