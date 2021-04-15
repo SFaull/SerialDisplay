@@ -11,13 +11,9 @@ namespace SerialDeviceDriver
     {
         public int Height { get; private set; }
         public int Width { get; private set; }
-
         public int TileHeight { get; private set; }
-
         public int TileWidth { get; private set; }
-
         public Bitmap Image { get; private set; }
-
         public List<Tile> Tiles { get; private set; }
 
         public byte[] PixelData;
@@ -40,9 +36,9 @@ namespace SerialDeviceDriver
 
         public void LoadImage(Bitmap image)
         {
-            this.Image = image;
-            this.PixelData = ImageToBytes(image);
-            this.Tiles = ImageToTiles(image);
+            this.Image = new Bitmap(image);
+            this.PixelData = ImageToBytes(this.Image);
+            this.Tiles = ImageToTiles(this.Image);
         }
 
         public bool GetTiledFrameDelta(TiledFrame oldFrame, out List<Tile> tiles)
@@ -79,9 +75,9 @@ namespace SerialDeviceDriver
             UInt16 pixel = 0;
 
             // convert the colour to r5g6b5
-            pixel |= (UInt16)((UInt16)(clr.B & 0b11111000) << 8);
+            pixel |= (UInt16)((UInt16)(clr.R & 0b11111000) << 8);
             pixel |= (UInt16)((UInt16)(clr.G & 0b11111100) << 3);
-            pixel |= (UInt16)((UInt16)(clr.R & 0b11111000) >> 3);
+            pixel |= (UInt16)((UInt16)(clr.B & 0b11111000) >> 3);
 
             return pixel;
         }

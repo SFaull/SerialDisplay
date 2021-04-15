@@ -51,6 +51,7 @@ namespace ImageLoaderPlugin
 
         public Bitmap NextFrame()
         {
+
             this.ImageChanged = false;
             return this.Frame;
         }

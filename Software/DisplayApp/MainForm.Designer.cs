@@ -45,6 +45,7 @@
             this.btnDisplaySpeedTest = new System.Windows.Forms.Button();
             this.btnUSBSpeedTest = new System.Windows.Forms.Button();
             this.flpPlugins = new System.Windows.Forms.FlowLayoutPanel();
+            this.gbPlugin = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTileView)).BeginInit();
             this.gbMain.SuspendLayout();
@@ -123,12 +124,13 @@
             // 
             // gbMain
             // 
+            this.gbMain.Controls.Add(this.gbPlugin);
             this.gbMain.Controls.Add(this.gbDisplayPreview);
             this.gbMain.Controls.Add(this.gbControls);
             this.gbMain.Controls.Add(this.gbDiagnostics);
             this.gbMain.Location = new System.Drawing.Point(12, 41);
             this.gbMain.Name = "gbMain";
-            this.gbMain.Size = new System.Drawing.Size(557, 501);
+            this.gbMain.Size = new System.Drawing.Size(557, 791);
             this.gbMain.TabIndex = 12;
             this.gbMain.TabStop = false;
             this.gbMain.Visible = false;
@@ -139,7 +141,7 @@
             this.gbDisplayPreview.Controls.Add(this.label1);
             this.gbDisplayPreview.Controls.Add(this.pbPreview);
             this.gbDisplayPreview.Controls.Add(this.pbTileView);
-            this.gbDisplayPreview.Location = new System.Drawing.Point(20, 78);
+            this.gbDisplayPreview.Location = new System.Drawing.Point(17, 358);
             this.gbDisplayPreview.Name = "gbDisplayPreview";
             this.gbDisplayPreview.Size = new System.Drawing.Size(520, 292);
             this.gbDisplayPreview.TabIndex = 14;
@@ -183,7 +185,7 @@
             this.gbDiagnostics.Controls.Add(this.btnIDN);
             this.gbDiagnostics.Controls.Add(this.btnSetRotation);
             this.gbDiagnostics.Controls.Add(this.btnRead);
-            this.gbDiagnostics.Location = new System.Drawing.Point(20, 376);
+            this.gbDiagnostics.Location = new System.Drawing.Point(17, 656);
             this.gbDiagnostics.Name = "gbDiagnostics";
             this.gbDiagnostics.Size = new System.Drawing.Size(520, 119);
             this.gbDiagnostics.TabIndex = 12;
@@ -228,11 +230,21 @@
             this.flpPlugins.Size = new System.Drawing.Size(514, 34);
             this.flpPlugins.TabIndex = 0;
             // 
+            // gbPlugin
+            // 
+            this.gbPlugin.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.gbPlugin.Location = new System.Drawing.Point(20, 78);
+            this.gbPlugin.Name = "gbPlugin";
+            this.gbPlugin.Size = new System.Drawing.Size(517, 274);
+            this.gbPlugin.TabIndex = 15;
+            this.gbPlugin.TabStop = false;
+            this.gbPlugin.Text = "Plugin";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(579, 554);
+            this.ClientSize = new System.Drawing.Size(579, 844);
             this.Controls.Add(this.gbMain);
             this.Controls.Add(this.btnConnect);
             this.Name = "MainForm";
@@ -266,6 +278,7 @@
         private System.Windows.Forms.Button btnDisplaySpeedTest;
         private System.Windows.Forms.Button btnSpeedTest;
         private System.Windows.Forms.FlowLayoutPanel flpPlugins;
+        private System.Windows.Forms.GroupBox gbPlugin;
     }
 }
 

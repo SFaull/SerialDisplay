@@ -54,13 +54,16 @@ namespace SerialDeviceDriver
         {
             Bitmap frame = new Bitmap(240, 240);    // todo don't hardcode this
 
-            using (Graphics g = Graphics.FromImage(frame)) { g.Clear(Color.White); }
-
-            foreach (Tile tile in tiles)
+            if (tiles != null)
             {
-                using (Graphics g = Graphics.FromImage(frame))
+                using (Graphics g = Graphics.FromImage(frame)) { g.Clear(Color.White); }
+
+                foreach (Tile tile in tiles)
                 {
-                    g.DrawImage(tile.Image, new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Image.Width, tile.Image.Height));
+                    using (Graphics g = Graphics.FromImage(frame))
+                    {
+                        g.DrawImage(tile.Image, new Rectangle(tile.Offset.X, tile.Offset.Y, tile.Image.Width, tile.Image.Height));
+                    }
                 }
             }
 

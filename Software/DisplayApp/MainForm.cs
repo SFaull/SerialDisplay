@@ -40,19 +40,28 @@ namespace DisplayApp
 
         private void btnPlugin_Click(object sender, EventArgs e)
         {
+            this.gbPlugin.Controls.Clear();
+            AppManager.Instance.StopPluginStateMachine();
+
             Button btn = sender as Button;
             IPlugin plugin = btn.Tag as IPlugin;
 
             AppManager.Instance.StartPluginStateMachine(plugin);
-            plugin.GetFormInstance().FormClosed += PluginForm_Closed;
-            plugin.GetFormInstance().ShowDialog();
-            
+            var form = plugin.GetFormInstance();
+            form.FormClosed += PluginForm_Closed;
+            form.TopLevel = false;
+            form.AutoScroll = true;
+            form.FormBorderStyle = FormBorderStyle.None;
+            this.gbPlugin.Controls.Add(form);
+            form.Show();
 
+            //form.ShowDialog();
 
         }
 
         private void PluginForm_Closed(object sender, FormClosedEventArgs e)
         {
+            this.gbPlugin.Controls.Clear();
             AppManager.Instance.StopPluginStateMachine();
         }
 
@@ -63,20 +72,27 @@ namespace DisplayApp
 
         private void Display_UpdateStart(object sender, EventArgs e)
         {
-            List<Bitmap> bitmaps = sender as List<Bitmap>;
+            try
+            {
+                List<Bitmap> bitmaps = sender as List<Bitmap>;
 
-            if (bitmaps.Count < 2)
-                return;
+                if (bitmaps.Count < 2)
+                    return;
 
-            pbPreview.Image = new Bitmap(bitmaps.ElementAt(0));
-            pbTileView.Image = new Bitmap(bitmaps.ElementAt(1));
+                pbPreview.Image = new Bitmap(bitmaps.ElementAt(0));
+                pbTileView.Image = new Bitmap(bitmaps.ElementAt(1));
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine("Exception: " + ex.Message);
+            }
         }
 
         private void Display_UpdateComplete(object sender, EventArgs e)
         {
-            if(AppManager.Instance.Display.Mode == DisplayMode.ScreenStream)
-                AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
+            // do nothing
         }
+
 
         #endregion
 
@@ -94,20 +110,9 @@ namespace DisplayApp
             gbMain.Visible = true;
         }
 
-        private void btnScreenStream_Click(object sender, EventArgs e)
-        {
-            AppManager.Instance.Display.SetMousePosition(MousePosition.X, MousePosition.Y);
-            AppManager.Instance.Display.SetMode(DisplayMode.ScreenStream);
-        }
-
-        private void btnIconMode_Click(object sender, EventArgs e)
-        {
-            AppManager.Instance.Display.SetMode(DisplayMode.Icon);
-        }
-
 #endregion
 
-#region Diagnostics
+        #region Diagnostics
 
         int rotation = 0;
         private void btnSetRotation_Click(object sender, EventArgs e)
